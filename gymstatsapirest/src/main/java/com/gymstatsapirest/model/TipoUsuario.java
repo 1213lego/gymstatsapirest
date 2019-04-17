@@ -18,7 +18,6 @@ public class TipoUsuario implements Serializable {
 	@Id
 	@GeneratedValue
 	private Short id;
-
 	private String tipo;
 
 	//bi-directional many-to-one association to Usuario
