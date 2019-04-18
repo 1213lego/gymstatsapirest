@@ -24,14 +24,14 @@ public class RestAdministrador {
     @Autowired
     private ServicioAdministrador servicioAdministrador;
 
-    @ApiOperation(value = "Crear un cliente",
-            notes = "Retorna el nuevo cliente si este fue creado, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 ",
+    @ApiOperation(value = "Registra un nuevo empleado" ,
+            notes = "Retorna el nuevo empleado si este fue creado, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 ",
             response = Usuario.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Se ha creado satisfatoriamente"),
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
-    @PostMapping(consumes = "application/json", produces = "application/json")
+    @PostMapping(path = "/empleados",consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> crearCliente(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos

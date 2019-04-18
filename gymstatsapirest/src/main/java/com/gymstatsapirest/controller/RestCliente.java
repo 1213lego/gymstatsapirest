@@ -18,7 +18,7 @@ public class RestCliente
 {
     @Autowired
     private ServicioCliente servicioCliente;
-    @ApiOperation(value = "Crear un cliente",
+    @ApiOperation(value = "Registra un nuevo cliente",
             notes = "Retorna el nuevo cliente si este fue creado, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 ",
             response = Usuario.class)
     @ApiResponses(value = {
