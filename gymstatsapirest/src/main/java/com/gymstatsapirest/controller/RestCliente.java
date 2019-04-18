@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Map;
-
 @Api(value="Clientes ", description="Se encarga de todas las operaciones sobre los clientes")
 @RestController
 @RequestMapping(path = "/clientes")
