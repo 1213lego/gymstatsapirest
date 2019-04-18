@@ -1,7 +1,10 @@
 package com.gymstatsapirest.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -11,10 +14,11 @@ import java.util.List;
  */
 @Entity
 @Table(name="tipo_documento")
-@NamedQuery(name="TipoDocumento.findAll", query="SELECT t FROM TipoDocumento t")
 public class TipoDocumento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(notes = "identidicador del tipo de documento", required = true)
+	@NotNull
 	@Id
 	private Short tipodocumento;
 
@@ -22,8 +26,8 @@ public class TipoDocumento implements Serializable {
 	private String nombreDocumento;
 
 	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="tipoDocumento")
-	private List<Usuario> usuarios;
+	/*@OneToMany(mappedBy="tipoDocumento")
+	private List<Usuario> usuarios;*/
 
 	public TipoDocumento() {
 	}
@@ -44,7 +48,7 @@ public class TipoDocumento implements Serializable {
 		this.nombreDocumento = nombreDocumento;
 	}
 
-	public List<Usuario> getUsuarios() {
+	/*public List<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 
@@ -64,6 +68,6 @@ public class TipoDocumento implements Serializable {
 		usuario.setTipoDocumento(null);
 
 		return usuario;
-	}
+	}*/
 
 }

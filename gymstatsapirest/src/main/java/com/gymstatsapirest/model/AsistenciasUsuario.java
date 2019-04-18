@@ -1,5 +1,7 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,7 +14,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="asistencias_usuario")
-@NamedQuery(name="AsistenciasUsuario.findAll", query="SELECT a FROM AsistenciasUsuario a")
 public class AsistenciasUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -27,6 +28,7 @@ public class AsistenciasUsuario implements Serializable {
 	private Timestamp fechaSalida;
 
 	//bi-directional many-to-one association to Usuario
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="documento_usuario")
 	private Usuario usuario;

@@ -1,7 +1,11 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -11,14 +15,14 @@ import java.util.List;
  */
 @Entity
 @Table(name="clientes")
-@NamedQuery(name="Cliente.findAll", query="SELECT c FROM Cliente c")
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
-
+	@NotNull
 	@Id
 	private Integer documento;
 
 	//bi-directional one-to-one association to Usuario
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="documento")
 	private Usuario usuario;
@@ -34,7 +38,11 @@ public class Cliente implements Serializable {
 	public Cliente() {
 	}
 
-	public Integer getDocumento() {
+	public Cliente(Integer documento) {
+		this.documento=documento;
+	}
+
+    public Integer getDocumento() {
 		return this.documento;
 	}
 

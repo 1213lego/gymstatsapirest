@@ -1,5 +1,7 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -11,7 +13,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="tipo_empleado")
-@NamedQuery(name="TipoEmpleado.findAll", query="SELECT t FROM TipoEmpleado t")
 public class TipoEmpleado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,8 +24,9 @@ public class TipoEmpleado implements Serializable {
 	private String tipoUsuario;
 
 	//bi-directional many-to-one association to Empleado
+	/*@JsonIgnore
 	@OneToMany(mappedBy="tipoEmpleado")
-	private List<Empleado> empleados;
+	private List<Empleado> empleados;*/
 
 	public TipoEmpleado() {
 	}
@@ -45,7 +47,7 @@ public class TipoEmpleado implements Serializable {
 		this.tipoUsuario = tipoUsuario;
 	}
 
-	public List<Empleado> getEmpleados() {
+	/*public List<Empleado> getEmpleados() {
 		return this.empleados;
 	}
 
@@ -65,6 +67,6 @@ public class TipoEmpleado implements Serializable {
 		empleado.setTipoEmpleado(null);
 
 		return empleado;
-	}
+	}*/
 
 }

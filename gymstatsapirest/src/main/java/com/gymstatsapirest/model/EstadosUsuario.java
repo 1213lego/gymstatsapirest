@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="estados_usuario")
-@NamedQuery(name="EstadosUsuario.findAll", query="SELECT e FROM EstadosUsuario e")
 public class EstadosUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -24,13 +23,17 @@ public class EstadosUsuario implements Serializable {
 	private String estadoCliente;
 
 	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="estadosUsuario")
-	private List<Usuario> usuarios;
+	/*@OneToMany(mappedBy="estadosUsuario")
+	private List<Usuario> usuarios;*/
 
 	public EstadosUsuario() {
 	}
 
-	public Short getIdEstadoUsuario() {
+    public EstadosUsuario(String estadoCliente) {
+	    this.estadoCliente=estadoCliente;
+    }
+
+    public Short getIdEstadoUsuario() {
 		return this.idEstadoUsuario;
 	}
 
@@ -46,7 +49,7 @@ public class EstadosUsuario implements Serializable {
 		this.estadoCliente = estadoCliente;
 	}
 
-	public List<Usuario> getUsuarios() {
+	/*public List<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 
@@ -66,6 +69,6 @@ public class EstadosUsuario implements Serializable {
 		usuario.setEstadosUsuario(null);
 
 		return usuario;
-	}
+	}*/
 
 }

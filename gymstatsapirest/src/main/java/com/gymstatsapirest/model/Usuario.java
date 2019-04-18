@@ -1,7 +1,13 @@
 package com.gymstatsapirest.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -9,34 +15,50 @@ import java.util.List;
  * The persistent class for the usuarios database table.
  * 
  */
+@ApiModel(description = "Todos los detalles sobre los usuarios")
 @Entity
 @Table(name="usuarios")
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
-public class Usuario implements Serializable {
+public class Usuario implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(notes = "Documento del usuario" ,required = true)
+	@NotNull
 	@Id
 	private Integer documento;
 
+	@ApiModelProperty(notes = "apellidos del usuario" ,required = true)
+	@NotBlank
 	private String apellidos;
 
+	@ApiModelProperty(notes = "Numero de celular del usuario" )
 	private Integer celular;
 
+	@ApiModelProperty(notes = "Direccion del usuario" )
 	private String direccion;
 
+	@ApiModelProperty(notes = "Correo del usuario",required = true)
+	@NotBlank
+	@Email
 	private String email;
 
+	@ApiModelProperty(notes = "foto del usuario" )
 	private byte[] foto;
 
+	@ApiModelProperty(notes = "nombres del usuario" ,required = true)
+	@NotBlank
 	private String nombres;
 
 	//bi-directional many-to-one association to AsistenciasUsuario
+	@ApiModelProperty(notes = "asistencias del usuario" )
 	@OneToMany(mappedBy="usuario")
 	private List<AsistenciasUsuario> asistenciasUsuarios;
 
 	//bi-directional many-to-one association to AutenticacionUsuario
-	@OneToMany(mappedBy="usuario")
-	private List<AutenticacionUsuario> autenticacionUsuarios;
+	@ApiModelProperty(notes = "datos para la autenticacion del usuario", required = true)
+	@Valid
+	@OneToOne(mappedBy="usuario")
+	private AutenticacionUsuario autenticacionUsuarios;
 
 	//bi-directional one-to-one association to Cliente
 	@OneToOne(mappedBy="usuario")
@@ -62,11 +84,15 @@ public class Usuario implements Serializable {
 	private Profesione profesione;
 
 	//bi-directional many-to-one association to TipoDocumento
+	@ApiModelProperty(notes = "Tipo de documento del usuario", required = true)
+	@NotNull
+	@Valid
 	@ManyToOne
 	@JoinColumn(name="tipodocumento")
 	private TipoDocumento tipoDocumento;
 
 	//bi-directional many-to-one association to TipoUsuario
+	@ApiModelProperty(notes = "tipo de usuario")
 	@ManyToOne
 	@JoinColumn(name="id_tipo_persona")
 	private TipoUsuario tipoUsuario;
@@ -152,26 +178,12 @@ public class Usuario implements Serializable {
 		return asistenciasUsuario;
 	}
 
-	public List<AutenticacionUsuario> getAutenticacionUsuarios() {
+	public AutenticacionUsuario getAutenticacionUsuarios() {
 		return this.autenticacionUsuarios;
 	}
 
-	public void setAutenticacionUsuarios(List<AutenticacionUsuario> autenticacionUsuarios) {
+	public void setAutenticacionUsuarios(AutenticacionUsuario autenticacionUsuarios) {
 		this.autenticacionUsuarios = autenticacionUsuarios;
-	}
-
-	public AutenticacionUsuario addAutenticacionUsuario(AutenticacionUsuario autenticacionUsuario) {
-		getAutenticacionUsuarios().add(autenticacionUsuario);
-		autenticacionUsuario.setUsuario(this);
-
-		return autenticacionUsuario;
-	}
-
-	public AutenticacionUsuario removeAutenticacionUsuario(AutenticacionUsuario autenticacionUsuario) {
-		getAutenticacionUsuarios().remove(autenticacionUsuario);
-		autenticacionUsuario.setUsuario(null);
-
-		return autenticacionUsuario;
 	}
 
 	public Cliente getCliente() {

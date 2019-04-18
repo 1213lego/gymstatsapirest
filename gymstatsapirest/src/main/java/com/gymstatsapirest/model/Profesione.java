@@ -11,29 +11,28 @@ import java.util.List;
  */
 @Entity
 @Table(name="profesiones")
-@NamedQuery(name="Profesione.findAll", query="SELECT p FROM Profesione p")
 public class Profesione implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
 	@Column(name="id_profesion")
-	private Short idProfesion;
+	private Integer idProfesion;
 
 	private String profesion;
 
 	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="profesione")
-	private List<Usuario> usuarios;
+	/*@OneToMany(mappedBy="profesione")
+	private List<Usuario> usuarios;*/
 
 	public Profesione() {
 	}
 
-	public Short getIdProfesion() {
+	public Integer getIdProfesion() {
 		return this.idProfesion;
 	}
 
-	public void setIdProfesion(Short idProfesion) {
+	public void setIdProfesion(Integer idProfesion) {
 		this.idProfesion = idProfesion;
 	}
 
@@ -45,7 +44,7 @@ public class Profesione implements Serializable {
 		this.profesion = profesion;
 	}
 
-	public List<Usuario> getUsuarios() {
+	/*public List<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 
@@ -65,6 +64,6 @@ public class Profesione implements Serializable {
 		usuario.setProfesione(null);
 
 		return usuario;
-	}
+	}*/
 
 }
