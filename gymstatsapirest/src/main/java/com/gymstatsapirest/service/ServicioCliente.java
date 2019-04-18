@@ -2,78 +2,43 @@ package com.gymstatsapirest.service;
 import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.FieldError;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ServicioCliente
 {
-    private static final String TIPO_USUARIO_CLIENTE="Cliente";
-    private static final String ESTADO_USUARIO_ACTIVO="Activo";
-    private static final String ESTADO_USUARIO_INACTIVO="Inactivo";
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
-    private ProfesionesRepository profesionesRepository;
-    @Autowired
-    private GeneroRepository generoRepository;
-    @Autowired
-    private TipoDocumentoRepository tipoDocumentoRepository;
-    @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
+    @Autowired
+    private Utils utils;
 
-    private TipoUsuario tipoUsuarioCliente;
-    private EstadosUsuario estadoUsuarioActivo;
-    private EstadosUsuario estadoUsuarioInactivo;
 
-    public ServicioCliente(@Autowired EstadoUsuarioRepository estadoUsuarioRepository, @Autowired TipoUsuarioRepository tipoUsuarioRepository)
-    {
-        TipoUsuario usuarioCliente=tipoUsuarioRepository.findByTipo(TIPO_USUARIO_CLIENTE);
-        if(usuarioCliente==null)
-        {
-            usuarioCliente=tipoUsuarioRepository.save(new TipoUsuario(TIPO_USUARIO_CLIENTE));
-        }
-        tipoUsuarioCliente=usuarioCliente;
-
-        EstadosUsuario usuarioActivo=estadoUsuarioRepository.findByEstadoCliente(ESTADO_USUARIO_ACTIVO);
-        if(usuarioActivo==null)
-        {
-            usuarioActivo= estadoUsuarioRepository.save(new EstadosUsuario(ESTADO_USUARIO_ACTIVO));
-        }
-        estadoUsuarioActivo=usuarioActivo;
-        EstadosUsuario usuarioInactivo=estadoUsuarioRepository.findByEstadoCliente(ESTADO_USUARIO_INACTIVO);
-        if(usuarioInactivo==null)
-        {
-            usuarioInactivo=estadoUsuarioRepository.findByEstadoCliente(ESTADO_USUARIO_INACTIVO);
-        }
-        estadoUsuarioInactivo=usuarioInactivo;
-    }
     public Usuario crearCliente(Usuario usuario)
     {
-        usuario.setTipoUsuario(tipoUsuarioCliente);
-        usuario.setEstadosUsuario(estadoUsuarioActivo);
+        usuario.setTipoUsuario(utils.getTipoUsuarioCliente());
+        usuario.getAutenticacionUsuarios().setUsuario(usuario);
+        usuario.setEstadosUsuario(utils.getEstadoUsuarioActivo());
         Usuario newUsuario=usuarioRepository.save(usuario);
         Cliente cliente=new Cliente(usuario.getDocumento());
         cliente=clienteRepository.save(cliente);
+        autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
         return newUsuario;
     }
-    public List<TipoDocumento> darTiposDocumento()
-    {
-        return tipoDocumentoRepository.findAll();
+
+    public ResponseEntity<?> badRequestErrorFields(List<FieldError> fieldErrors) {
+        return utils.badRequestErrorFields(fieldErrors);
     }
 
-    public List<Genero> darGeneros()
-    {
-        return generoRepository.findAll();
-    }
-
-    public List<Profesione> darProfesiones()
-    {
-        return profesionesRepository.findAll();
-    }
-    public List<Usuario> darUsuarios()
-    {
-        return usuarioRepository.findAll();
+    public Map<String, String> clienteValidoParaCrear(Usuario usuario) {
+        return utils.usuarioValidoParaCrear(usuario);
     }
 }

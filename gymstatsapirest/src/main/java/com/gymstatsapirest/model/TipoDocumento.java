@@ -1,7 +1,10 @@
 package com.gymstatsapirest.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -14,6 +17,8 @@ import java.util.List;
 public class TipoDocumento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@ApiModelProperty(notes = "identidicador del tipo de documento", required = true)
+	@NotNull
 	@Id
 	private Short tipodocumento;
 

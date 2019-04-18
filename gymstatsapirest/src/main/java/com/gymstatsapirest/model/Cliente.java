@@ -1,5 +1,7 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -20,6 +22,7 @@ public class Cliente implements Serializable {
 	private Integer documento;
 
 	//bi-directional one-to-one association to Usuario
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name="documento")
 	private Usuario usuario;

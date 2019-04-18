@@ -1,8 +1,6 @@
 package com.gymstatsapirest.controller;
-import com.gymstatsapirest.repository.EstadoUsuarioRepository;
-import com.gymstatsapirest.repository.GeneroRepository;
-import com.gymstatsapirest.repository.TipoDocumentoRepository;
-import com.gymstatsapirest.repository.TipoUsuarioRepository;
+import com.gymstatsapirest.model.AutenticacionUsuario;
+import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +23,8 @@ public class RestPrueba
     private EstadoUsuarioRepository estadoUsuarioRepository;
     @Autowired
     private TipoDocumentoRepository tipoDocumentoRepository;
+    @Autowired
+    private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
 
     @GetMapping(path = "/utilidades", produces = "application/json")
 	public Map<String,List> utilidadesUsuario()
@@ -36,4 +36,11 @@ public class RestPrueba
         map.put("tipodocumento",tipoDocumentoRepository.findAll());
         return map;
     }
+    @GetMapping(path = "/autenticacions", produces = "application/json")
+    public List<AutenticacionUsuario>darAuntenticaciones()
+    {
+        return autenticacionUsuarioRepository.findAll();
+    }
+
+
 }

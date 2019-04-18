@@ -6,5 +6,5 @@ import com.gymstatsapirest.model.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer>
 {
-
+    boolean existsByDocumento(Integer documento);
 }
