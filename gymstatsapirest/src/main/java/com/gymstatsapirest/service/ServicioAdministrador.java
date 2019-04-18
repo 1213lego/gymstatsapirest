@@ -1,7 +1,11 @@
 package com.gymstatsapirest.service;
 
+import com.gymstatsapirest.model.Cliente;
+import com.gymstatsapirest.model.Empleado;
 import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.repository.AutenticacionUsuarioRepository;
+import com.gymstatsapirest.repository.EmpleadoRepository;
+import com.gymstatsapirest.repository.TipoEmpleadoRepository;
 import com.gymstatsapirest.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +24,32 @@ public class ServicioAdministrador
     private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
     @Autowired
     private Utils utils;
+    @Autowired
+    private TipoEmpleadoRepository tipoEmpleadoRepository;
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
 
     public Map<String, String> empleadoValidoParaCrear(Usuario usuario)
     {
         Map<String,String> result=utils.usuarioValidoParaCrear(usuario);
-
+        if(usuario.getEmpleado()==null)
+        {
+            result.put("empleado","No puede ser vacio");
+        }
+        else
+        {
+            if(usuario.getEmpleado().getTipoEmpleado()==null)
+            {
+                result.put("empleado.tipoEmpleado","No puede ser vacio");
+            }
+            else
+            {
+                if(!tipoEmpleadoRepository.existsByIdTipo(usuario.getEmpleado().getTipoEmpleado().getIdTipo()))
+                {
+                    result.put("empleado.tipoEmpleado.idTipo","No existe");
+                }
+            }
+        }
         return result;
     }
     public ResponseEntity<?> badRequestErrorFields(List<FieldError> fieldErrors)
@@ -34,6 +59,16 @@ public class ServicioAdministrador
 
     public Usuario crearEmpleado(Usuario usuario)
     {
-        return null;
+        usuario.setTipoUsuario(utils.getTipoUsuarioEmpleado());
+        usuario.getAutenticacionUsuarios().setUsuario(usuario);
+        usuario.setEstadosUsuario(utils.getEstadoUsuarioActivo());
+        usuario.getEmpleado().setDocumento(usuario.getDocumento());
+        Empleado empleado=usuario.getEmpleado();
+        usuario.setEmpleado(null);
+        Usuario newUsuario=usuarioRepository.save(usuario);
+        empleado=empleadoRepository.save(empleado);
+        newUsuario.setEmpleado(empleado);
+        autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
+        return newUsuario;
     }
 }

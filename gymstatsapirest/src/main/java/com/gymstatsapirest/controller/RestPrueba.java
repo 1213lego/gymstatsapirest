@@ -1,5 +1,6 @@
 package com.gymstatsapirest.controller;
 import com.gymstatsapirest.model.AutenticacionUsuario;
+import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,7 +26,10 @@ public class RestPrueba
     private TipoDocumentoRepository tipoDocumentoRepository;
     @Autowired
     private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
-
+    @Autowired
+    private TipoEmpleadoRepository tipoEmpleadoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
     @GetMapping(path = "/utilidades", produces = "application/json")
 	public Map<String,List> utilidadesUsuario()
     {
@@ -34,12 +38,18 @@ public class RestPrueba
         map.put("tipousuario",tipoUsuarioRepository.findAll());
         map.put("estadousuario",estadoUsuarioRepository.findAll());
         map.put("tipodocumento",tipoDocumentoRepository.findAll());
+        map.put("tipoempleado",tipoEmpleadoRepository.findAll());
         return map;
     }
     @GetMapping(path = "/autenticacions", produces = "application/json")
     public List<AutenticacionUsuario>darAuntenticaciones()
     {
         return autenticacionUsuarioRepository.findAll();
+    }
+    @GetMapping(path = "/usuarios", produces = "application/json")
+    public List<Usuario>darUsuarios()
+    {
+        return usuarioRepository.findAll();
     }
 
 
