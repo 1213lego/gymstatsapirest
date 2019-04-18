@@ -1,17 +1,12 @@
 package com.gymstatsapirest.service;
-
-import com.gymstatsapirest.model.Cliente;
 import com.gymstatsapirest.model.Empleado;
+import com.gymstatsapirest.model.Tarifa;
 import com.gymstatsapirest.model.Usuario;
-import com.gymstatsapirest.repository.AutenticacionUsuarioRepository;
-import com.gymstatsapirest.repository.EmpleadoRepository;
-import com.gymstatsapirest.repository.TipoEmpleadoRepository;
-import com.gymstatsapirest.repository.UsuarioRepository;
+import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
-
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +23,8 @@ public class ServicioAdministrador
     private TipoEmpleadoRepository tipoEmpleadoRepository;
     @Autowired
     private EmpleadoRepository empleadoRepository;
+    @Autowired
+    private TarifaRepository tarifaRepository;
 
     public Map<String, String> empleadoValidoParaCrear(Usuario usuario)
     {
@@ -70,5 +67,10 @@ public class ServicioAdministrador
         newUsuario.setEmpleado(empleado);
         autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
         return newUsuario;
+    }
+
+    public Tarifa crearTarifa(Tarifa tarifa)
+    {
+        return tarifaRepository.save(tarifa);
     }
 }
