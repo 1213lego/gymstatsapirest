@@ -11,7 +11,6 @@ import java.sql.Time;
  */
 @Entity
 @Table(name="suscripciones")
-@NamedQuery(name="Suscripcione.findAll", query="SELECT s FROM Suscripcione s")
 public class Suscripcione implements Serializable {
 	private static final long serialVersionUID = 1L;
 

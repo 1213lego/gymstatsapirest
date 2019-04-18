@@ -10,7 +10,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="medida_clientes")
-@NamedQuery(name="MedidaCliente.findAll", query="SELECT m FROM MedidaCliente m")
 public class MedidaCliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 

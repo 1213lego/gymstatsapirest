@@ -2,6 +2,7 @@ package com.gymstatsapirest.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -10,10 +11,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="empleados")
-@NamedQuery(name="Empleado.findAll", query="SELECT e FROM Empleado e")
 public class Empleado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Id
 	private Integer documento;
 

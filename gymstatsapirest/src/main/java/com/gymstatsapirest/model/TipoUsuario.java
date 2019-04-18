@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Entity
 @Table(name="tipo_usuario")
-@NamedQuery(name="TipoUsuario.findAll", query="SELECT t FROM TipoUsuario t")
 public class TipoUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -21,11 +20,16 @@ public class TipoUsuario implements Serializable {
 	private String tipo;
 
 	//bi-directional many-to-one association to Usuario
-	@OneToMany(mappedBy="tipoUsuario")
-	private List<Usuario> usuarios;
+	/*@OneToMany(mappedBy="tipoUsuario")
+	private List<Usuario> usuarios;*/
 
 	public TipoUsuario() {
 	}
+
+	public TipoUsuario(String tipo) {
+		this.tipo=tipo;
+	}
+
 
 	public Short getId() {
 		return this.id;
@@ -43,7 +47,7 @@ public class TipoUsuario implements Serializable {
 		this.tipo = tipo;
 	}
 
-	public List<Usuario> getUsuarios() {
+	/*public List<Usuario> getUsuarios() {
 		return this.usuarios;
 	}
 
@@ -63,6 +67,6 @@ public class TipoUsuario implements Serializable {
 		usuario.setTipoUsuario(null);
 
 		return usuario;
-	}
+	}*/
 
 }

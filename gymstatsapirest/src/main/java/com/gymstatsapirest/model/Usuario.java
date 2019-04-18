@@ -2,6 +2,9 @@ package com.gymstatsapirest.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -11,23 +14,26 @@ import java.util.List;
  */
 @Entity
 @Table(name="usuarios")
-@NamedQuery(name="Usuario.findAll", query="SELECT u FROM Usuario u")
 public class Usuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Id
 	private Integer documento;
 
+	@NotBlank
 	private String apellidos;
 
 	private Integer celular;
 
 	private String direccion;
 
+	@Email
 	private String email;
 
 	private byte[] foto;
 
+	@NotBlank
 	private String nombres;
 
 	//bi-directional many-to-one association to AsistenciasUsuario

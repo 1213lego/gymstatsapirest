@@ -10,14 +10,13 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="autenticacion_usuario")
-@NamedQuery(name="AutenticacionUsuario.findAll", query="SELECT a FROM AutenticacionUsuario a")
 public class AutenticacionUsuario implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private String username;
 
-	private byte[] password;
+	private String password;
 
 	//bi-directional many-to-one association to Usuario
 	@ManyToOne
@@ -35,11 +34,11 @@ public class AutenticacionUsuario implements Serializable {
 		this.username = username;
 	}
 
-	public byte[] getPassword() {
+	public String getPassword() {
 		return this.password;
 	}
 
-	public void setPassword(byte[] password) {
+	public void setPassword(String password) {
 		this.password = password;
 	}
 
