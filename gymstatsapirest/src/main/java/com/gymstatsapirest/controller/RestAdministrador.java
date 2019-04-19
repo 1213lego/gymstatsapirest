@@ -1,4 +1,5 @@
 package com.gymstatsapirest.controller;
+import com.gymstatsapirest.model.Maquina;
 import com.gymstatsapirest.model.Tarifa;
 import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.service.ServicioAdministrador;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.Optional;
 
 @Api(value="Administrador ", description="Se encarga de todas las operaciones del administrador")
 @RestController
@@ -21,7 +21,7 @@ public class RestAdministrador {
     @Autowired
     private ServicioAdministrador servicioAdministrador;
 
-    @ApiOperation(value = "Registra un nuevo empleado" ,
+    @ApiOperation(value = "Registra un nuevo empleado en la base de datos" ,
             notes = "Retorna el nuevo empleado si este fue creado, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 ",
             response = Usuario.class)
     @ApiResponses(value = {
@@ -45,9 +45,9 @@ public class RestAdministrador {
     }
 
 
-    @ApiOperation(value = "Agrega una nueva tarifa" ,
-            notes = "Retorna la nueva tarifa si esta fue creada, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 ",
-            response = Tarifa.class)
+    @ApiOperation(value = "Crea una nueva tarifa en la base de datos" ,
+            notes = "Retorna la nueva tarifa si esta fue creada, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 "
+            )
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Se ha creado satisfatoriamente"),
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
@@ -60,7 +60,7 @@ public class RestAdministrador {
             //generamos una respuesta con map clave (campo del error) valor(mensaje del error en el campo)
             return servicioAdministrador.badRequestErrorFields(bindingResult.getFieldErrors());
         }
-        Tarifa newTarifa = servicioAdministrador.guardarTarifa(tarifa);
+        Tarifa newTarifa = servicioAdministrador.crearTarifa(tarifa);
         return new ResponseEntity<>(newTarifa, HttpStatus.CREATED);
     }
 
@@ -68,19 +68,36 @@ public class RestAdministrador {
             (value = "Actualiza una tarifa" , response = Tarifa.class)
     @ApiResponses
             (value = {
-                @ApiResponse(code = 201, message = "Se ha creado satisfatoriamente"),
-                @ApiResponse(code = 404, message = "No se ha actualizado debido a que encuentra la tarifa con identificador suministrado"),
+                @ApiResponse(code = 201, message = "Se ha actualizado satisfatoriamente"),
+                @ApiResponse(code = 404, message = "No se ha actualizado debido a que no encuentra la tarifa con identificador suministrado"),
                     @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
-    @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json", produces = "application/json")
+    @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json")
     public ResponseEntity modificarTarifa( @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
     {
-        System.out.println();
         if(bindingResult.hasErrors())
         {
             return servicioAdministrador.badRequestErrorFields(bindingResult.getFieldErrors());
         }
         return servicioAdministrador.actualizarTarifa(tarifa,idTarifa);
+    }
+
+    @ApiOperation
+            (value = "Agrega un maquina a la base de datos")
+    @ApiResponses
+            (value = {
+                    @ApiResponse(code = 201, message = "Se ha agregado satisfatoriamente"),
+                    @ApiResponse(code = 404, message = "No se ha creado debido a que los datos no son validos,se retornara un Json con sus respectivos detalles")
+            })
+    @PostMapping(path = "/maquinas",consumes = "application/json", produces = "application/json")
+    public ResponseEntity<?> crearMaquina(@Valid @RequestBody  Maquina maquina, BindingResult bindingResult)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return servicioAdministrador.badRequestErrorFields(bindingResult.getFieldErrors());
+        }
+        Maquina newMaquina=servicioAdministrador.crearMaquina(maquina);
+        return new ResponseEntity<>(newMaquina,HttpStatus.CREATED);
     }
 
 }
