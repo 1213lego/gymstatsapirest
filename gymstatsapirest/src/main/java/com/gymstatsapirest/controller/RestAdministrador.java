@@ -7,12 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.Optional;
+
 @Api(value="Administrador ", description="Se encarga de todas las operaciones del administrador")
 @RestController
 @RequestMapping(path = "/admin")
@@ -47,7 +47,7 @@ public class RestAdministrador {
 
     @ApiOperation(value = "Agrega una nueva tarifa" ,
             notes = "Retorna la nueva tarifa si esta fue creada, de lo contrario genera un json con sus respectivos erores y codigo de respuesta Bad Request 400 ",
-            response = Usuario.class)
+            response = Tarifa.class)
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Se ha creado satisfatoriamente"),
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
@@ -60,8 +60,27 @@ public class RestAdministrador {
             //generamos una respuesta con map clave (campo del error) valor(mensaje del error en el campo)
             return servicioAdministrador.badRequestErrorFields(bindingResult.getFieldErrors());
         }
-        Tarifa newTarifa = servicioAdministrador.crearTarifa(tarifa);
+        Tarifa newTarifa = servicioAdministrador.guardarTarifa(tarifa);
         return new ResponseEntity<>(newTarifa, HttpStatus.CREATED);
+    }
+
+    @ApiOperation
+            (value = "Actualiza una tarifa" , response = Tarifa.class)
+    @ApiResponses
+            (value = {
+                @ApiResponse(code = 201, message = "Se ha creado satisfatoriamente"),
+                @ApiResponse(code = 404, message = "No se ha actualizado debido a que encuentra la tarifa con identificador suministrado"),
+                    @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
+    })
+    @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json", produces = "application/json")
+    public ResponseEntity modificarTarifa( @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
+    {
+        System.out.println();
+        if(bindingResult.hasErrors())
+        {
+            return servicioAdministrador.badRequestErrorFields(bindingResult.getFieldErrors());
+        }
+        return servicioAdministrador.actualizarTarifa(tarifa,idTarifa);
     }
 
 }

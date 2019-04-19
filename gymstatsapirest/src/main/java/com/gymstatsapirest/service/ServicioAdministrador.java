@@ -4,11 +4,13 @@ import com.gymstatsapirest.model.Tarifa;
 import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.FieldError;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class ServicioAdministrador
@@ -69,8 +71,21 @@ public class ServicioAdministrador
         return newUsuario;
     }
 
-    public Tarifa crearTarifa(Tarifa tarifa)
+    public Tarifa guardarTarifa(Tarifa tarifa)
     {
         return tarifaRepository.save(tarifa);
+    }
+
+    public ResponseEntity<?> actualizarTarifa(Tarifa tarifa, Short idTarifa)
+    {
+        Optional<Tarifa> tarifaOptional = tarifaRepository.findById(idTarifa);
+
+        if (!tarifaOptional.isPresent())
+        {
+            tarifa.setIdTarifa(idTarifa);
+            return new ResponseEntity(tarifa, HttpStatus.NOT_FOUND);
+        }
+        tarifa.setIdTarifa(idTarifa);
+        return new ResponseEntity<>(tarifaRepository.save(tarifa),HttpStatus.OK);
     }
 }
