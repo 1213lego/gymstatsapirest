@@ -1,5 +1,6 @@
 package com.gymstatsapirest.service;
 import com.gymstatsapirest.model.Empleado;
+import com.gymstatsapirest.model.Maquina;
 import com.gymstatsapirest.model.Tarifa;
 import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.repository.*;
@@ -27,7 +28,8 @@ public class ServicioAdministrador
     private EmpleadoRepository empleadoRepository;
     @Autowired
     private TarifaRepository tarifaRepository;
-
+    @Autowired
+    private MaquinaRepository maquinaRepository;
     public Map<String, String> empleadoValidoParaCrear(Usuario usuario)
     {
         Map<String,String> result=utils.usuarioValidoParaCrear(usuario);
@@ -70,8 +72,11 @@ public class ServicioAdministrador
         autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
         return newUsuario;
     }
-
-    public Tarifa guardarTarifa(Tarifa tarifa)
+    public Maquina crearMaquina(Maquina maquina)
+    {
+        return maquinaRepository.save(maquina);
+    }
+    public Tarifa crearTarifa(Tarifa tarifa)
     {
         return tarifaRepository.save(tarifa);
     }

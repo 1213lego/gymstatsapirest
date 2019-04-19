@@ -1,4 +1,5 @@
 package com.gymstatsapirest.controller;
+import com.gymstatsapirest.model.Maquina;
 import com.gymstatsapirest.model.Tarifa;
 import com.gymstatsapirest.service.ServicioMain;
 import io.swagger.annotations.Api;
@@ -7,6 +8,11 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.reflect.Array;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 @Api(value="main ", description="Se encarga de las operaciones en general que no requieren de autenticacion")
 @RestController
@@ -22,4 +28,11 @@ public class RestMain
     {
         return servicioMain.darTarifas();
     }
+
+    @GetMapping(path = "/maquinas", produces = "application/json")
+    public List<Maquina> darMaquinas()
+    {
+        return servicioMain.darMaquina();
+    }
+
 }
