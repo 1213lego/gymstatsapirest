@@ -7,7 +7,6 @@ import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 import java.util.List;
@@ -70,6 +69,7 @@ public class ServicioAdministrador
         Usuario newUsuario=usuarioRepository.save(usuario);
         empleado=empleadoRepository.save(empleado);
         newUsuario.setEmpleado(empleado);
+        usuario.getAutenticacionUsuarios().setPassword(utils.encriptarPassword(usuario.getAutenticacionUsuarios().getPassword()));
         autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
         return newUsuario;
     }
@@ -79,6 +79,7 @@ public class ServicioAdministrador
     }
     public Tarifa crearTarifa(Tarifa tarifa)
     {
+        tarifa.setIdTarifa(null);
         return tarifaRepository.save(tarifa);
     }
 

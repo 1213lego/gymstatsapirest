@@ -34,7 +34,7 @@ public class RestAdministrador {
     })
     @PostMapping(path = "/empleados",consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> crearCliente(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
+    public ResponseEntity<?> crearEmpleado(@ApiParam(value = "Empleado a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
         if (bindingResult.hasErrors()) {
@@ -59,7 +59,7 @@ public class RestAdministrador {
     })
     @PostMapping(path = "/tarifas",consumes = "application/json", produces = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> crearTarifa(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult)
+    public ResponseEntity<?> crearTarifa(@ApiParam(value = "Tarifa a guardar", required = true) @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
         if (bindingResult.hasErrors()) {
@@ -80,7 +80,7 @@ public class RestAdministrador {
     })
     @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity modificarTarifa( @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
+    public ResponseEntity modificarTarifa(@ApiParam(value = "Tarifa a modificar", required = true)  @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
     {
         if(bindingResult.hasErrors())
         {
@@ -90,7 +90,7 @@ public class RestAdministrador {
     }
 
     @ApiOperation
-            (value = "Agrega un maquina a la base de datos")
+            (value = "Agrega un maquina a la base de datos",response = Maquina.class)
     @ApiResponses
             (value = {
                     @ApiResponse(code = 201, message = "Se ha agregado satisfatoriamente"),
@@ -107,15 +107,4 @@ public class RestAdministrador {
         Maquina newMaquina=servicioAdministrador.crearMaquina(maquina);
         return new ResponseEntity<>(newMaquina,HttpStatus.CREATED);
     }
-
-
-
-    //De prueba
-    @GetMapping(path = "/tarifas", produces = "application/json")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<?> darTarifas()
-    {
-        return servicioAdministrador.darTarifas();
-    }
-
 }

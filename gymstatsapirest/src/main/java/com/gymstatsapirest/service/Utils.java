@@ -10,6 +10,7 @@ import com.gymstatsapirest.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
@@ -36,6 +37,8 @@ public class Utils
     private TipoUsuario tipoUsuarioEmpleado;
     private EstadosUsuario estadoUsuarioActivo;
     private EstadosUsuario estadoUsuarioInactivo;
+    @Autowired
+    private PasswordEncoder encoder;
 
     public Utils(@Autowired EstadoUsuarioRepository estadoUsuarioRepository, @Autowired TipoUsuarioRepository tipoUsuarioRepository)
     {
@@ -127,5 +130,9 @@ public class Utils
             result.put("documento","ya existe");
         }
         return result;
+    }
+    public String encriptarPassword(String password)
+    {
+        return encoder.encode(password);
     }
 }
