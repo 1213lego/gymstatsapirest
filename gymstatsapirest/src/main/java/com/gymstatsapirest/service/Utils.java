@@ -21,9 +21,9 @@ import java.util.Map;
 @Service
 public class Utils
 {
-    public static final String TIPO_USUARIO_CLIENTE="CLIENTE";
-    public static final String TIPO_USUARIO_ADMIN="ADMIN";
-    public static final String TIPO_USUARIO_EMPLEADO="EMPLEADO";
+    public static final String TIPO_USUARIO_CLIENTE="ROLE_CLIENTE";
+    public static final String TIPO_USUARIO_ADMIN="ROLE_ADMIN";
+    public static final String TIPO_USUARIO_EMPLEADO="ROLE_EMPLEADO";
     public static final String ESTADO_USUARIO_ACTIVO="Activo";
     public static final String ESTADO_USUARIO_INACTIVO="Inactivo";
 

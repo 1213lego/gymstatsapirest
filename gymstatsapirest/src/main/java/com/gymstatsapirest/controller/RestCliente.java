@@ -49,7 +49,7 @@ public class RestCliente
 
     //De prueba
     @GetMapping(path = "/clientes",produces = "application/json")
-    @PreAuthorize("hasRole('CLIENTE')")
+    @PreAuthorize("hasRole('ROLE_CLIENTE')")
     public List darCliente()
     {
         return servicioCliente.darCliente();

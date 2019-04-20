@@ -17,7 +17,7 @@ public class RestEmpleado
     private ServicioEmpleado servicioEmpleado;
 
     @GetMapping(value = "/clientes/{documento}", produces = "application/json")
-    @PreAuthorize("hasRole('EMPLEADO')")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
     public Usuario darCliente(@PathVariable Integer documento)
     {
         return servicioEmpleado.darUsuario(documento).orElseThrow(() -> new RecursoNoEncontradoException("cliente", "documento", documento));

@@ -33,7 +33,7 @@ public class RestAdministrador {
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PostMapping(path = "/empleados",consumes = "application/json", produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> crearCliente(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
@@ -58,7 +58,7 @@ public class RestAdministrador {
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PostMapping(path = "/tarifas",consumes = "application/json", produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> crearTarifa(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
@@ -79,7 +79,7 @@ public class RestAdministrador {
                     @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity modificarTarifa( @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
     {
         if(bindingResult.hasErrors())
@@ -97,7 +97,7 @@ public class RestAdministrador {
                     @ApiResponse(code = 404, message = "No se ha creado debido a que los datos no son validos,se retornara un Json con sus respectivos detalles")
             })
     @PostMapping(path = "/maquinas",consumes = "application/json", produces = "application/json")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> crearMaquina(@Valid @RequestBody  Maquina maquina, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
@@ -111,8 +111,8 @@ public class RestAdministrador {
 
 
     //De prueba
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping(path = "/tarifas", produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<?> darTarifas()
     {
         return servicioAdministrador.darTarifas();
