@@ -11,18 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class Utils
 {
-    public static final String TIPO_USUARIO_CLIENTE="Cliente";
-    public static final String TIPO_USUARIO_ADMIN="Admin";
-    public static final String TIPO_USUARIO_EMPLEADO="Empleado";
+    public static final String TIPO_USUARIO_CLIENTE="CLIENTE";
+    public static final String TIPO_USUARIO_ADMIN="ADMIN";
+    public static final String TIPO_USUARIO_EMPLEADO="EMPLEADO";
     public static final String ESTADO_USUARIO_ACTIVO="Activo";
     public static final String ESTADO_USUARIO_INACTIVO="Inactivo";
 

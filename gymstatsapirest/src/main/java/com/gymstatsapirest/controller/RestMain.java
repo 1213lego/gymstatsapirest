@@ -1,14 +1,15 @@
 package com.gymstatsapirest.controller;
+import com.gymstatsapirest.model.AutenticacionUsuario;
 import com.gymstatsapirest.model.Maquina;
 import com.gymstatsapirest.model.Tarifa;
 import com.gymstatsapirest.service.ServicioMain;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.lang.reflect.Array;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -16,8 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Api(value="main ", description="Se encarga de las operaciones en general que no requieren de autenticacion")
 @RestController
-@RequestMapping(path = "/")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class RestMain
 {
     @Autowired
@@ -33,6 +33,16 @@ public class RestMain
     public List<Maquina> darMaquinas()
     {
         return servicioMain.darMaquina();
+    }
+
+    @PostMapping(path = "/login",produces = "application/json", consumes = "application/json")
+    public ResponseEntity<?> login(@Valid @RequestBody AutenticacionUsuario autenticacionUsuario, BindingResult bindingResult)
+    {
+        if(bindingResult.hasErrors())
+        {
+            return servicioMain.getUtils().badRequestErrorFields(bindingResult.getFieldErrors());
+        }
+        return servicioMain.login(autenticacionUsuario);
     }
 
 }

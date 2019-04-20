@@ -3,6 +3,7 @@ import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
@@ -20,8 +21,8 @@ public class ServicioCliente
     private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
     @Autowired
     private Utils utils;
-
-
+    @Autowired
+    private PasswordEncoder encoder;
     public Usuario crearCliente(Usuario usuario)
     {
         usuario.setTipoUsuario(utils.getTipoUsuarioCliente());
@@ -30,15 +31,21 @@ public class ServicioCliente
         Usuario newUsuario=usuarioRepository.save(usuario);
         Cliente cliente=new Cliente(usuario.getDocumento());
         cliente=clienteRepository.save(cliente);
+        usuario.getAutenticacionUsuarios().setPassword(encoder.encode(usuario.getAutenticacionUsuarios().getPassword()));
         autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
         return newUsuario;
     }
-
     public ResponseEntity<?> badRequestErrorFields(List<FieldError> fieldErrors) {
         return utils.badRequestErrorFields(fieldErrors);
     }
 
     public Map<String, String> clienteValidoParaCrear(Usuario usuario) {
         return utils.usuarioValidoParaCrear(usuario);
+    }
+
+    //Deprueba
+    public List darCliente()
+    {
+        return clienteRepository.findAll();
     }
 }

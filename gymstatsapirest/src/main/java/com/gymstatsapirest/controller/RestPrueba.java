@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/pruebas")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class RestPrueba 
 {
     @Autowired

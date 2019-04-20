@@ -4,19 +4,20 @@ import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.service.ServicioEmpleado;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
 @Api(value="Empleados ", description="Se encarga de todas las operaciones sobre los empleado")
 @RestController
 @RequestMapping(path = "/empleados")
+@CrossOrigin(origins = "*")
 public class RestEmpleado
 {
     @Autowired
     private ServicioEmpleado servicioEmpleado;
 
     @GetMapping(value = "/clientes/{documento}", produces = "application/json")
+    @PreAuthorize("hasRole('EMPLEADO')")
     public Usuario darCliente(@PathVariable Integer documento)
     {
         return servicioEmpleado.darUsuario(documento).orElseThrow(() -> new RecursoNoEncontradoException("cliente", "documento", documento));

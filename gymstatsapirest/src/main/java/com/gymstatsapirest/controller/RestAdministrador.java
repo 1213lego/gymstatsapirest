@@ -7,15 +7,19 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Api(value="Administrador ", description="Se encarga de todas las operaciones del administrador")
 @RestController
 @RequestMapping(path = "/admin")
+@CrossOrigin(origins = "*")
 public class RestAdministrador {
 
     @Autowired
@@ -29,6 +33,7 @@ public class RestAdministrador {
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PostMapping(path = "/empleados",consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> crearCliente(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
@@ -53,6 +58,7 @@ public class RestAdministrador {
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PostMapping(path = "/tarifas",consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> crearTarifa(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
@@ -73,6 +79,7 @@ public class RestAdministrador {
                     @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity modificarTarifa( @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
     {
         if(bindingResult.hasErrors())
@@ -90,6 +97,7 @@ public class RestAdministrador {
                     @ApiResponse(code = 404, message = "No se ha creado debido a que los datos no son validos,se retornara un Json con sus respectivos detalles")
             })
     @PostMapping(path = "/maquinas",consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> crearMaquina(@Valid @RequestBody  Maquina maquina, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
@@ -98,6 +106,16 @@ public class RestAdministrador {
         }
         Maquina newMaquina=servicioAdministrador.crearMaquina(maquina);
         return new ResponseEntity<>(newMaquina,HttpStatus.CREATED);
+    }
+
+
+
+    //De prueba
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping(path = "/tarifas", produces = "application/json")
+    public List<?> darTarifas()
+    {
+        return servicioAdministrador.darTarifas();
     }
 
 }
