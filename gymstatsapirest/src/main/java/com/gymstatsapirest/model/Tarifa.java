@@ -35,6 +35,8 @@ public class Tarifa implements Serializable {
 	@Column(name = "precio")
 	private double precio;
 
+	private int duracionDias;
+
 	//bi-directional many-to-one association to Suscripcione
 	@JsonIgnore
 	@OneToMany(mappedBy="tarifa")
@@ -89,4 +91,11 @@ public class Tarifa implements Serializable {
 		return suscripcione;
 	}
 
+	public int getDuracionDias() {
+		return duracionDias;
+	}
+
+	public void setDuracionDias(int duracionDias) {
+		this.duracionDias = duracionDias;
+	}
 }

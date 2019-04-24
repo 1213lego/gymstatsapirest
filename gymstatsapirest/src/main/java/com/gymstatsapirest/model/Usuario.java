@@ -2,6 +2,8 @@ package com.gymstatsapirest.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -98,6 +100,9 @@ public class Usuario implements Serializable
 	private TipoUsuario tipoUsuario;
 
 	public Usuario() {
+	}
+	public Usuario(Integer documento) {
+		this.documento=documento;
 	}
 
 	public Integer getDocumento() {

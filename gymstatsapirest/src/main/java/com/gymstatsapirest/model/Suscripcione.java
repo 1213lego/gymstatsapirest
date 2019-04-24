@@ -3,6 +3,7 @@ package com.gymstatsapirest.model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Time;
+import java.util.Date;
 
 
 /**
@@ -20,16 +21,16 @@ public class Suscripcione implements Serializable {
 	private Long idSubscripcion;
 
 	@Column(name="fecha_fin")
-	private Time fechaFin;
+	private Date fechaFin;
 
 	@Column(name="fecha_inicio")
-	private Time fechaInicio;
+	private Date fechaInicio;
 
 	//bi-directional many-to-one association to Cliente
 	@ManyToOne
 	private Cliente cliente;
 
-	//bi-directional many-to-one association to EstadoSuscripcion
+	//bi-directional many-to-one association to EstadoSuscripcionRepository
 	@ManyToOne
 	@JoinColumn(name="estado_suscripcon")
 	private EstadoSuscripcion estadoSuscripcion;
@@ -50,19 +51,19 @@ public class Suscripcione implements Serializable {
 		this.idSubscripcion = idSubscripcion;
 	}
 
-	public Time getFechaFin() {
+	public Date getFechaFin() {
 		return this.fechaFin;
 	}
 
-	public void setFechaFin(Time fechaFin) {
+	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 
-	public Time getFechaInicio() {
+	public Date getFechaInicio() {
 		return this.fechaInicio;
 	}
 
-	public void setFechaInicio(Time fechaInicio) {
+	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 

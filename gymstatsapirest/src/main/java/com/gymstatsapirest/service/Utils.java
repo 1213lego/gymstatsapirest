@@ -1,12 +1,10 @@
 package com.gymstatsapirest.service;
 
+import com.gymstatsapirest.model.EstadoSuscripcion;
 import com.gymstatsapirest.model.EstadosUsuario;
 import com.gymstatsapirest.model.TipoUsuario;
 import com.gymstatsapirest.model.Usuario;
-import com.gymstatsapirest.repository.AutenticacionUsuarioRepository;
-import com.gymstatsapirest.repository.EstadoUsuarioRepository;
-import com.gymstatsapirest.repository.TipoUsuarioRepository;
-import com.gymstatsapirest.repository.UsuarioRepository;
+import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +25,8 @@ public class Utils
     public static final String TIPO_USUARIO_EMPLEADO="ROLE_EMPLEADO";
     public static final String ESTADO_USUARIO_ACTIVO="Activo";
     public static final String ESTADO_USUARIO_INACTIVO="Inactivo";
-
+    public static final String ESTADO_SUSCRIPCION_EXPIRADA="expirada";
+    public static final String ESTADO_SUSCRIPCION_VIGENTE="vigente";
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -37,10 +36,13 @@ public class Utils
     private TipoUsuario tipoUsuarioEmpleado;
     private EstadosUsuario estadoUsuarioActivo;
     private EstadosUsuario estadoUsuarioInactivo;
+    private EstadoSuscripcion estadoSuscripcionExpirada;
+    private EstadoSuscripcion estadoSuscripcionVigente;
     @Autowired
     private PasswordEncoder encoder;
 
-    public Utils(@Autowired EstadoUsuarioRepository estadoUsuarioRepository, @Autowired TipoUsuarioRepository tipoUsuarioRepository)
+    public Utils(@Autowired EstadoUsuarioRepository estadoUsuarioRepository, @Autowired TipoUsuarioRepository tipoUsuarioRepository
+    , @Autowired EstadoSuscripcionRepository estadoSuscripcionRepository )
     {
         TipoUsuario usuarioCliente=tipoUsuarioRepository.findByTipo(TIPO_USUARIO_CLIENTE);
         if(usuarioCliente==null)
@@ -74,6 +76,19 @@ public class Utils
             usuarioInactivo=estadoUsuarioRepository.save(new EstadosUsuario(ESTADO_USUARIO_INACTIVO));
         }
         estadoUsuarioInactivo=usuarioInactivo;
+
+        EstadoSuscripcion expirada= estadoSuscripcionRepository.findByEstadoSuscripcion(ESTADO_SUSCRIPCION_EXPIRADA);
+        if(expirada==null)
+        {
+            expirada=estadoSuscripcionRepository.save(new EstadoSuscripcion(ESTADO_SUSCRIPCION_EXPIRADA));
+        }
+        estadoSuscripcionExpirada=expirada;
+        EstadoSuscripcion vigente= estadoSuscripcionRepository.findByEstadoSuscripcion(ESTADO_SUSCRIPCION_VIGENTE);
+        if(vigente==null)
+        {
+            vigente=estadoSuscripcionRepository.save(new EstadoSuscripcion(ESTADO_SUSCRIPCION_VIGENTE));
+        }
+        estadoSuscripcionVigente=vigente;
     }
 
     public TipoUsuario getTipoUsuarioCliente() {
@@ -134,5 +149,13 @@ public class Utils
     public String encriptarPassword(String password)
     {
         return encoder.encode(password);
+    }
+
+    public EstadoSuscripcion getEstadoSuscripcionExpirada() {
+        return estadoSuscripcionExpirada;
+    }
+
+    public EstadoSuscripcion getEstadoSuscripcionVigente() {
+        return estadoSuscripcionVigente;
     }
 }

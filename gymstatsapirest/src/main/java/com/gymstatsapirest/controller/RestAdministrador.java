@@ -1,7 +1,5 @@
 package com.gymstatsapirest.controller;
-import com.gymstatsapirest.model.Maquina;
-import com.gymstatsapirest.model.Tarifa;
-import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.service.ServicioAdministrador;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,5 +104,12 @@ public class RestAdministrador {
         }
         Maquina newMaquina=servicioAdministrador.crearMaquina(maquina);
         return new ResponseEntity<>(newMaquina,HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "/tiposempleado")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<TipoEmpleado> darTiposEmpleado()
+    {
+        return servicioAdministrador.darTiposEmpleado();
     }
 }

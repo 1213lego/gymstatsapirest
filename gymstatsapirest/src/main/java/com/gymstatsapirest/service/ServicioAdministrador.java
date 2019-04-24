@@ -1,8 +1,5 @@
 package com.gymstatsapirest.service;
-import com.gymstatsapirest.model.Empleado;
-import com.gymstatsapirest.model.Maquina;
-import com.gymstatsapirest.model.Tarifa;
-import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,9 +92,8 @@ public class ServicioAdministrador
         tarifa.setIdTarifa(idTarifa);
         return new ResponseEntity<>(tarifaRepository.save(tarifa),HttpStatus.OK);
     }
-    //De prueba
-    public List<?> darTarifas()
+    public List<TipoEmpleado> darTiposEmpleado()
     {
-        return tarifaRepository.findAll();
+        return tipoEmpleadoRepository.findAll();
     }
 }
