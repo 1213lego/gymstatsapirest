@@ -1,9 +1,6 @@
 package com.gymstatsapirest.service;
 
-import com.gymstatsapirest.model.EstadoSuscripcion;
-import com.gymstatsapirest.model.EstadosUsuario;
-import com.gymstatsapirest.model.TipoUsuario;
-import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +29,8 @@ public class Utils
     private UsuarioRepository usuarioRepository;
     @Autowired
     private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
+    @Autowired
+    private TarifaRepository tarifaRepository;
     private TipoUsuario tipoUsuarioCliente;
     private TipoUsuario tipoUsuarioAdministrador;
     private TipoUsuario tipoUsuarioEmpleado;
@@ -38,6 +38,7 @@ public class Utils
     private EstadosUsuario estadoUsuarioInactivo;
     private EstadoSuscripcion estadoSuscripcionExpirada;
     private EstadoSuscripcion estadoSuscripcionVigente;
+    private Tarifa tarifaDiaria;
     @Autowired
     private PasswordEncoder encoder;
 
@@ -150,6 +151,10 @@ public class Utils
     {
         return encoder.encode(password);
     }
+    public boolean verificarPassword(String password, String encodedPassword)
+    {
+        return encoder.matches(password,encodedPassword);
+    }
 
     public EstadoSuscripcion getEstadoSuscripcionExpirada() {
         return estadoSuscripcionExpirada;
@@ -157,5 +162,22 @@ public class Utils
 
     public EstadoSuscripcion getEstadoSuscripcionVigente() {
         return estadoSuscripcionVigente;
+    }
+
+    public Tarifa getTarifaDiaria()
+    {
+        return tarifaRepository.findById(new Short("4")).get();
+    }
+    public int getDiaActual()
+    {
+        return Calendar.getInstance().get(Calendar.DATE);
+    }
+    public int getMesActual()
+    {
+        return (Calendar.getInstance().get(Calendar.MONTH)+1);
+    }
+    public int getAnioActual()
+    {
+        return Calendar.getInstance().get(Calendar.YEAR);
     }
 }

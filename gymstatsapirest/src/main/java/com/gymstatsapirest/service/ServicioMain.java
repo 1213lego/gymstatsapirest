@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import java.util.*;
 
@@ -115,7 +114,6 @@ public class ServicioMain
         }
         return result;
     }
-
     public ResponseEntity<?> registrarAsistenciaUsuario(AutenticacionUsuario autenticacionUsuario)
     {
         Optional<AutenticacionUsuario> autenticacion=autenticacionUsuarioRepository.findByUsername(autenticacionUsuario.getUsername());
@@ -123,7 +121,7 @@ public class ServicioMain
         {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        else if(!utils.encriptarPassword(autenticacionUsuario.getPassword()).equals(autenticacion.get().getPassword()))
+        else if(!utils.verificarPassword(autenticacionUsuario.getPassword(),autenticacion.get().getPassword()))
         {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -139,7 +137,7 @@ public class ServicioMain
 
     private ResponseEntity registrarAsistenciaEmpleado(Usuario usuario)
     {
-        return null;
+        return registrarAsistencia(usuario);
     }
     private ResponseEntity registrarAsistenciaCliente(Usuario usuario)
     {
@@ -150,37 +148,44 @@ public class ServicioMain
         }
         else
         {
-            Calendar c = Calendar.getInstance();
-            Integer dia = c.get(Calendar.DATE);
-            Integer mes = c.get(Calendar.MONTH)+1;
-            Integer annio = c.get(Calendar.YEAR);
-            List<AsistenciasUsuario> asistencias= asistenciaUsuarioRepository.asistenciaPorUsuarioyFecha(dia,mes,annio,usuario);
-            if(asistencias.size()==0)
-            {
-                registraAsistencia(usuario);
-                result=new ResponseEntity<>(HttpStatus.OK);
-            }
-            else
-            {
-                for (AsistenciasUsuario  asistencia: asistencias)
-                {
-                    if(asistencia.getFechaSalida()==null)
-                    {
-                        actualizarAsistenciaUsuario(asistencia,new Date(System.currentTimeMillis()));
-                        result=new ResponseEntity<>(HttpStatus.OK);
-                        break;
-                    }
-                }
-            }
-            if(result==null)
-            {
-                registraAsistencia(usuario);
-                result=new ResponseEntity<>(HttpStatus.OK);
-            }
+           return registrarAsistencia(usuario);
         }
         return result;
     }
-    private void registraAsistencia(Usuario usuario)
+
+    private ResponseEntity registrarAsistencia(Usuario usuario)
+    {
+        ResponseEntity<?> result=null;
+        Calendar c = Calendar.getInstance();
+        Integer dia = c.get(Calendar.DATE);
+        Integer mes = c.get(Calendar.MONTH)+1;
+        Integer annio = c.get(Calendar.YEAR);
+        List<AsistenciasUsuario> asistencias= asistenciaUsuarioRepository.asistenciaPorUsuarioyFecha(dia,mes,annio,usuario);
+        if(asistencias.size()==0)
+        {
+            guardarAsistencia(usuario);
+            result=new ResponseEntity<>(HttpStatus.OK);
+        }
+        else
+        {
+            for (AsistenciasUsuario  asistencia: asistencias)
+            {
+                if(asistencia.getFechaSalida()==null)
+                {
+                    actualizarAsistenciaUsuarioFechaFin(asistencia,new Date(System.currentTimeMillis()));
+                    result=new ResponseEntity<>(HttpStatus.CREATED);
+                    break;
+                }
+            }
+        }
+        if(result==null)
+        {
+            guardarAsistencia(usuario);
+            result=new ResponseEntity<>(HttpStatus.OK);
+        }
+        return result;
+    }
+    private void guardarAsistencia(Usuario usuario)
     {
         AsistenciasUsuario nuevaAsistencia= new AsistenciasUsuario();
         nuevaAsistencia.setFechaIngreso(new Date(System.currentTimeMillis()));
@@ -191,7 +196,7 @@ public class ServicioMain
     {
         return estadosMaquinaRepository.findAll();
     }
-    private void actualizarAsistenciaUsuario(AsistenciasUsuario asistenciasUsuario, Date fechaSalida)
+    private void actualizarAsistenciaUsuarioFechaFin(AsistenciasUsuario asistenciasUsuario, Date fechaSalida)
     {
         asistenciasUsuario.setFechaSalida(fechaSalida);
         asistenciaUsuarioRepository.save(asistenciasUsuario);

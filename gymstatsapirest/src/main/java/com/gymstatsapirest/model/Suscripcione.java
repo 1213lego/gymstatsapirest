@@ -2,7 +2,8 @@ package com.gymstatsapirest.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Time;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -20,13 +21,17 @@ public class Suscripcione implements Serializable {
 	@Column(name="id_subscripcion")
 	private Long idSubscripcion;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_fin")
 	private Date fechaFin;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_inicio")
 	private Date fechaInicio;
 
+	private double precio;
 	//bi-directional many-to-one association to Cliente
+	@NotNull
 	@ManyToOne
 	private Cliente cliente;
 
@@ -36,6 +41,7 @@ public class Suscripcione implements Serializable {
 	private EstadoSuscripcion estadoSuscripcion;
 
 	//bi-directional many-to-one association to Tarifa
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="tipo_tarifa")
 	private Tarifa tarifa;
@@ -88,7 +94,15 @@ public class Suscripcione implements Serializable {
 	}
 
 	public void setTarifa(Tarifa tarifa) {
+		precio=tarifa.getPrecio();
 		this.tarifa = tarifa;
 	}
 
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
 }
