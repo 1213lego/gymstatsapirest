@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
@@ -34,6 +35,8 @@ public class Tarifa implements Serializable {
 	@Positive
 	@Column(name = "precio")
 	private double precio;
+
+	private int duracionDias;
 
 	//bi-directional many-to-one association to Suscripcione
 	@JsonIgnore
@@ -89,4 +92,11 @@ public class Tarifa implements Serializable {
 		return suscripcione;
 	}
 
+	public int getDuracionDias() {
+		return duracionDias;
+	}
+
+	public void setDuracionDias(int duracionDias) {
+		this.duracionDias = duracionDias;
+	}
 }

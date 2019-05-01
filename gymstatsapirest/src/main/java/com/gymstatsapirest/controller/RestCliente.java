@@ -5,16 +5,19 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 @Api(value="Clientes ", description="Se encarga de todas las operaciones sobre los clientes")
 @RestController
-@RequestMapping(path = "/clientes")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class RestCliente
 {
+
     @Autowired
     private ServicioCliente servicioCliente;
     @ApiOperation(value = "Registra un nuevo cliente",
@@ -24,7 +27,7 @@ public class RestCliente
             @ApiResponse(code = 201, message = "Se ha creado satisfatoriamente"),
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
-    @PostMapping(consumes = "application/json",produces = "application/json")
+    @PostMapping(path = "/signup",consumes = "application/json",produces = "application/json")
     public ResponseEntity<?> crearCliente(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
@@ -38,7 +41,17 @@ public class RestCliente
         {
             return new ResponseEntity<>(validacion, HttpStatus.BAD_REQUEST);
         }
+
         Usuario newCliente=servicioCliente.crearCliente(usuario);
         return new ResponseEntity<>(newCliente,HttpStatus.CREATED);
+    }
+
+
+    //De prueba
+    @GetMapping(path = "/clientes",produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_CLIENTE')")
+    public List darCliente()
+    {
+        return servicioCliente.darCliente();
     }
 }

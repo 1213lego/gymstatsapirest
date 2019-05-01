@@ -2,7 +2,9 @@ package com.gymstatsapirest.model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.sql.Time;
+import javax.validation.constraints.NotNull;
+import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -19,22 +21,27 @@ public class Suscripcione implements Serializable {
 	@Column(name="id_subscripcion")
 	private Long idSubscripcion;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_fin")
-	private Time fechaFin;
+	private Date fechaFin;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_inicio")
-	private Time fechaInicio;
+	private Date fechaInicio;
 
+	private double precio;
 	//bi-directional many-to-one association to Cliente
+	@NotNull
 	@ManyToOne
 	private Cliente cliente;
 
-	//bi-directional many-to-one association to EstadoSuscripcion
+	//bi-directional many-to-one association to EstadoSuscripcionRepository
 	@ManyToOne
 	@JoinColumn(name="estado_suscripcon")
 	private EstadoSuscripcion estadoSuscripcion;
 
 	//bi-directional many-to-one association to Tarifa
+	@NotNull
 	@ManyToOne
 	@JoinColumn(name="tipo_tarifa")
 	private Tarifa tarifa;
@@ -50,19 +57,19 @@ public class Suscripcione implements Serializable {
 		this.idSubscripcion = idSubscripcion;
 	}
 
-	public Time getFechaFin() {
+	public Date getFechaFin() {
 		return this.fechaFin;
 	}
 
-	public void setFechaFin(Time fechaFin) {
+	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
 
-	public Time getFechaInicio() {
+	public Date getFechaInicio() {
 		return this.fechaInicio;
 	}
 
-	public void setFechaInicio(Time fechaInicio) {
+	public void setFechaInicio(Date fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 
@@ -87,7 +94,15 @@ public class Suscripcione implements Serializable {
 	}
 
 	public void setTarifa(Tarifa tarifa) {
+		precio=tarifa.getPrecio();
 		this.tarifa = tarifa;
 	}
 
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
 }

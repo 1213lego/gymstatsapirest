@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 
@@ -21,11 +22,13 @@ public class AsistenciasUsuario implements Serializable {
 	@GeneratedValue
 	private Long id;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_ingreso")
-	private Timestamp fechaIngreso;
+	private Date fechaIngreso;
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_salida")
-	private Timestamp fechaSalida;
+	private Date fechaSalida;
 
 	//bi-directional many-to-one association to Usuario
 	@JsonIgnore
@@ -48,19 +51,19 @@ public class AsistenciasUsuario implements Serializable {
 		this.id = id;
 	}
 
-	public Timestamp getFechaIngreso() {
+	public Date getFechaIngreso() {
 		return this.fechaIngreso;
 	}
 
-	public void setFechaIngreso(Timestamp fechaIngreso) {
+	public void setFechaIngreso(Date fechaIngreso) {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	public Timestamp getFechaSalida() {
+	public Date getFechaSalida() {
 		return this.fechaSalida;
 	}
 
-	public void setFechaSalida(Timestamp fechaSalida) {
+	public void setFechaSalida(Date fechaSalida) {
 		this.fechaSalida = fechaSalida;
 	}
 

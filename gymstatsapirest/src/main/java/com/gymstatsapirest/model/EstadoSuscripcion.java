@@ -1,5 +1,7 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -23,13 +25,18 @@ public class EstadoSuscripcion implements Serializable {
 	private String estadoSuscripcion;
 
 	//bi-directional many-to-one association to Suscripcione
+	@JsonIgnore
 	@OneToMany(mappedBy="estadoSuscripcion")
 	private List<Suscripcione> suscripciones;
 
 	public EstadoSuscripcion() {
 	}
 
-	public Short getIdEstadoSuscripcon() {
+	public EstadoSuscripcion(String estadoSuscripcion) {
+		this.estadoSuscripcion=estadoSuscripcion;
+	}
+
+    public Short getIdEstadoSuscripcon() {
 		return this.idEstadoSuscripcon;
 	}
 

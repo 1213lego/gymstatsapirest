@@ -1,4 +1,4 @@
-package com.gymstatsapirest.swagger;
+package com.gymstatsapirest.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

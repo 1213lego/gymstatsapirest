@@ -1,19 +1,16 @@
 package com.gymstatsapirest.service;
-import com.gymstatsapirest.model.Empleado;
-import com.gymstatsapirest.model.Maquina;
-import com.gymstatsapirest.model.Tarifa;
-import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@Component
+@Service
 public class ServicioAdministrador
 {
     @Autowired
@@ -69,6 +66,7 @@ public class ServicioAdministrador
         Usuario newUsuario=usuarioRepository.save(usuario);
         empleado=empleadoRepository.save(empleado);
         newUsuario.setEmpleado(empleado);
+        usuario.getAutenticacionUsuarios().setPassword(utils.encriptarPassword(usuario.getAutenticacionUsuarios().getPassword()));
         autenticacionUsuarioRepository.save(usuario.getAutenticacionUsuarios());
         return newUsuario;
     }
@@ -78,6 +76,7 @@ public class ServicioAdministrador
     }
     public Tarifa crearTarifa(Tarifa tarifa)
     {
+        tarifa.setIdTarifa(null);
         return tarifaRepository.save(tarifa);
     }
 
@@ -92,5 +91,9 @@ public class ServicioAdministrador
         }
         tarifa.setIdTarifa(idTarifa);
         return new ResponseEntity<>(tarifaRepository.save(tarifa),HttpStatus.OK);
+    }
+    public List<TipoEmpleado> darTiposEmpleado()
+    {
+        return tipoEmpleadoRepository.findAll();
     }
 }

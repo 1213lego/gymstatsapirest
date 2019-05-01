@@ -30,7 +30,6 @@ public class EstadosMaquina implements Serializable {
 	private Short idEstadoMaquina;
 
 	@ApiModelProperty(name = "descripcion del estado actual de la maquina", required = true)
-	@NotEmpty
 	@Column(name="estado_maquina")
 	private String estadoMaquina;
 

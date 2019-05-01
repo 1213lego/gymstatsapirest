@@ -1,42 +1,49 @@
 package com.gymstatsapirest.service;
 
-import com.gymstatsapirest.model.EstadosUsuario;
-import com.gymstatsapirest.model.TipoUsuario;
-import com.gymstatsapirest.model.Usuario;
-import com.gymstatsapirest.repository.AutenticacionUsuarioRepository;
-import com.gymstatsapirest.repository.EstadoUsuarioRepository;
-import com.gymstatsapirest.repository.TipoUsuarioRepository;
-import com.gymstatsapirest.repository.UsuarioRepository;
+import com.gymstatsapirest.model.*;
+import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.FieldError;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+@Service
 public class Utils
 {
-    public static final String TIPO_USUARIO_CLIENTE="Cliente";
-    public static final String TIPO_USUARIO_ADMIN="Admin";
-    public static final String TIPO_USUARIO_EMPLEADO="Empleado";
+    public static final String TIPO_USUARIO_CLIENTE="ROLE_CLIENTE";
+    public static final String TIPO_USUARIO_ADMIN="ROLE_ADMIN";
+    public static final String TIPO_USUARIO_EMPLEADO="ROLE_EMPLEADO";
     public static final String ESTADO_USUARIO_ACTIVO="Activo";
     public static final String ESTADO_USUARIO_INACTIVO="Inactivo";
-
+    public static final String ESTADO_SUSCRIPCION_EXPIRADA="expirada";
+    public static final String ESTADO_SUSCRIPCION_VIGENTE="vigente";
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
     private AutenticacionUsuarioRepository autenticacionUsuarioRepository;
+    @Autowired
+    private TarifaRepository tarifaRepository;
     private TipoUsuario tipoUsuarioCliente;
     private TipoUsuario tipoUsuarioAdministrador;
     private TipoUsuario tipoUsuarioEmpleado;
     private EstadosUsuario estadoUsuarioActivo;
     private EstadosUsuario estadoUsuarioInactivo;
+    private EstadoSuscripcion estadoSuscripcionExpirada;
+    private EstadoSuscripcion estadoSuscripcionVigente;
+    private Tarifa tarifaDiaria;
+    @Autowired
+    private PasswordEncoder encoder;
 
-    public Utils(@Autowired EstadoUsuarioRepository estadoUsuarioRepository, @Autowired TipoUsuarioRepository tipoUsuarioRepository)
+    public Utils(@Autowired EstadoUsuarioRepository estadoUsuarioRepository, @Autowired TipoUsuarioRepository tipoUsuarioRepository
+    , @Autowired EstadoSuscripcionRepository estadoSuscripcionRepository )
     {
         TipoUsuario usuarioCliente=tipoUsuarioRepository.findByTipo(TIPO_USUARIO_CLIENTE);
         if(usuarioCliente==null)
@@ -70,6 +77,19 @@ public class Utils
             usuarioInactivo=estadoUsuarioRepository.save(new EstadosUsuario(ESTADO_USUARIO_INACTIVO));
         }
         estadoUsuarioInactivo=usuarioInactivo;
+
+        EstadoSuscripcion expirada= estadoSuscripcionRepository.findByEstadoSuscripcion(ESTADO_SUSCRIPCION_EXPIRADA);
+        if(expirada==null)
+        {
+            expirada=estadoSuscripcionRepository.save(new EstadoSuscripcion(ESTADO_SUSCRIPCION_EXPIRADA));
+        }
+        estadoSuscripcionExpirada=expirada;
+        EstadoSuscripcion vigente= estadoSuscripcionRepository.findByEstadoSuscripcion(ESTADO_SUSCRIPCION_VIGENTE);
+        if(vigente==null)
+        {
+            vigente=estadoSuscripcionRepository.save(new EstadoSuscripcion(ESTADO_SUSCRIPCION_VIGENTE));
+        }
+        estadoSuscripcionVigente=vigente;
     }
 
     public TipoUsuario getTipoUsuarioCliente() {
@@ -126,5 +146,38 @@ public class Utils
             result.put("documento","ya existe");
         }
         return result;
+    }
+    public String encriptarPassword(String password)
+    {
+        return encoder.encode(password);
+    }
+    public boolean verificarPassword(String password, String encodedPassword)
+    {
+        return encoder.matches(password,encodedPassword);
+    }
+
+    public EstadoSuscripcion getEstadoSuscripcionExpirada() {
+        return estadoSuscripcionExpirada;
+    }
+
+    public EstadoSuscripcion getEstadoSuscripcionVigente() {
+        return estadoSuscripcionVigente;
+    }
+
+    public Tarifa getTarifaDiaria()
+    {
+        return tarifaRepository.findById(new Short("4")).get();
+    }
+    public int getDiaActual()
+    {
+        return Calendar.getInstance().get(Calendar.DATE);
+    }
+    public int getMesActual()
+    {
+        return (Calendar.getInstance().get(Calendar.MONTH)+1);
+    }
+    public int getAnioActual()
+    {
+        return Calendar.getInstance().get(Calendar.YEAR);
     }
 }

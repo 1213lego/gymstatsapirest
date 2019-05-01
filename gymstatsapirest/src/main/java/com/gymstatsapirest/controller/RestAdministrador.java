@@ -1,21 +1,23 @@
 package com.gymstatsapirest.controller;
-import com.gymstatsapirest.model.Maquina;
-import com.gymstatsapirest.model.Tarifa;
-import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.service.ServicioAdministrador;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @Api(value="Administrador ", description="Se encarga de todas las operaciones del administrador")
 @RestController
 @RequestMapping(path = "/admin")
+@CrossOrigin(origins = "*")
 public class RestAdministrador {
 
     @Autowired
@@ -29,7 +31,8 @@ public class RestAdministrador {
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PostMapping(path = "/empleados",consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> crearCliente(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> crearEmpleado(@ApiParam(value = "Empleado a guardar", required = true) @Valid @RequestBody Usuario usuario, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
         if (bindingResult.hasErrors()) {
@@ -53,7 +56,8 @@ public class RestAdministrador {
             @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PostMapping(path = "/tarifas",consumes = "application/json", produces = "application/json")
-    public ResponseEntity<?> crearTarifa(@ApiParam(value = "cliente a guardar", required = true) @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> crearTarifa(@ApiParam(value = "Tarifa a guardar", required = true) @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult)
     {
         //Si el usuario a crear tiene errores en alguno de sus campos
         if (bindingResult.hasErrors()) {
@@ -73,7 +77,8 @@ public class RestAdministrador {
                     @ApiResponse(code = 400, message = "Los datos suministrados no son validos se retornara un body con su respectivos detalles")
     })
     @PutMapping(path = "/tarifas/{idTarifa}",consumes = "application/json")
-    public ResponseEntity modificarTarifa( @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity modificarTarifa(@ApiParam(value = "Tarifa a modificar", required = true)  @Valid @RequestBody Tarifa tarifa, BindingResult bindingResult, @PathVariable Short idTarifa)
     {
         if(bindingResult.hasErrors())
         {
@@ -83,13 +88,14 @@ public class RestAdministrador {
     }
 
     @ApiOperation
-            (value = "Agrega un maquina a la base de datos")
+            (value = "Agrega un maquina a la base de datos",response = Maquina.class)
     @ApiResponses
             (value = {
                     @ApiResponse(code = 201, message = "Se ha agregado satisfatoriamente"),
                     @ApiResponse(code = 404, message = "No se ha creado debido a que los datos no son validos,se retornara un Json con sus respectivos detalles")
             })
     @PostMapping(path = "/maquinas",consumes = "application/json", produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> crearMaquina(@Valid @RequestBody  Maquina maquina, BindingResult bindingResult)
     {
         if(bindingResult.hasErrors())
@@ -100,4 +106,10 @@ public class RestAdministrador {
         return new ResponseEntity<>(newMaquina,HttpStatus.CREATED);
     }
 
+    @GetMapping(path = "/tiposempleado")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<TipoEmpleado> darTiposEmpleado()
+    {
+        return servicioAdministrador.darTiposEmpleado();
+    }
 }
