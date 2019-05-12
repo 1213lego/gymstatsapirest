@@ -42,6 +42,7 @@ public class Usuario implements Serializable
 	@ApiModelProperty(notes = "Correo del usuario",required = true)
 	@NotBlank
 	@Email
+	@Column(unique = true)
 	private String email;
 
 	@ApiModelProperty(notes = "foto del usuario" )
