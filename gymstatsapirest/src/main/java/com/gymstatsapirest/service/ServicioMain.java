@@ -3,6 +3,8 @@ import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import com.gymstatsapirest.security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +42,8 @@ public class ServicioMain
     private SuscripcionesRepository suscripcionesRepository;
     @Autowired
     private EstadosMaquinaRepository estadosMaquinaRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     public List<Tarifa> darTarifas()
     {
@@ -200,6 +204,10 @@ public class ServicioMain
     {
         asistenciasUsuario.setFechaSalida(fechaSalida);
         asistenciaUsuarioRepository.save(asistenciasUsuario);
+    }
+    public List<Usuario> listaClientes(int page, int size)
+    {
+        return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioCliente());
     }
 }
 

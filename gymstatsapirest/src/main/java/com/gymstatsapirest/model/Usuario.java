@@ -1,5 +1,6 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.models.auth.In;
@@ -55,15 +56,18 @@ public class Usuario implements Serializable
 	//bi-directional many-to-one association to AsistenciasUsuario
 	@ApiModelProperty(notes = "asistencias del usuario" )
 	@OneToMany(mappedBy="usuario")
+    @JsonIgnore
 	private List<AsistenciasUsuario> asistenciasUsuarios;
 
 	//bi-directional many-to-one association to AutenticacionUsuario
+    @JsonIgnore
 	@ApiModelProperty(notes = "datos para la autenticacion del usuario", required = true)
 	@Valid
 	@OneToOne(mappedBy="usuario")
 	private AutenticacionUsuario autenticacionUsuarios;
 
 	//bi-directional one-to-one association to Cliente
+    @JsonIgnore
 	@OneToOne(mappedBy="usuario")
 	private Cliente cliente;
 

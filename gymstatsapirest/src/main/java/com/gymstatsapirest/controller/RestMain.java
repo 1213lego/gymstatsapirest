@@ -4,7 +4,9 @@ import com.gymstatsapirest.service.JwtResponse;
 import com.gymstatsapirest.service.ServicioMain;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,5 +79,11 @@ public class RestMain
     public List<EstadosMaquina> darEstadosMaquina()
     {
         return servicioMain.darEstadosMaquinas();
+    }
+
+    @GetMapping(path = "/listar-clientes/{page}/{size}")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO') or hasRole('ROLE_ADMIN')")
+    public List<Usuario> listarClientes(@PathVariable int page, @PathVariable int size){
+        return servicioMain.listaClientes(page,size);
     }
 }

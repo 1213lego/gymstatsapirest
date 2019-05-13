@@ -10,6 +10,10 @@ import com.gymstatsapirest.repository.TarifaRepository;
 import com.gymstatsapirest.repository.UsuarioRepository;
 import lombok.Cleanup;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -21,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -95,5 +100,13 @@ public class ServicioEmpleado
         nuevaSuscripcion.setFechaFin(calendar.getTime());
         suscripcionesRepository.save(nuevaSuscripcion);
         return new ResponseEntity(HttpStatus.OK);
+    }
+    public List<Usuario> listaClientes(int page, int size)
+    {
+        return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioCliente());
+    }
+    public List<Usuario> listarEmpleados(int page,int size)
+    {
+        return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioEmpleado());
     }
 }
