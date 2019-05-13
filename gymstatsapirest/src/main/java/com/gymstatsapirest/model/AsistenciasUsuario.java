@@ -31,12 +31,12 @@ public class AsistenciasUsuario implements Serializable {
 	private Date fechaSalida;
 
 	//bi-directional many-to-one association to Usuario
-	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="documento_usuario")
 	private Usuario usuario;
 
 	//bi-directional many-to-one association to AsistenciasUsuarioRutina
+	@JsonIgnore
 	@OneToMany(mappedBy="asistenciasUsuario")
 	private List<AsistenciasUsuarioRutina> asistenciasUsuarioRutinas;
 

@@ -1,5 +1,7 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.List;
@@ -26,10 +28,11 @@ public class Rutina implements Serializable {
 
 	//bi-directional many-to-one association to AsistenciasUsuarioRutina
 	@OneToMany(mappedBy="rutina")
+	@JsonIgnore
 	private List<AsistenciasUsuarioRutina> asistenciasUsuarioRutinas;
-
 	//bi-directional many-to-one association to MaquinaRutina
 	@OneToMany(mappedBy="rutina")
+	@JsonIgnore
 	private List<MaquinaRutina> maquinaRutinas;
 
 	public Rutina() {
