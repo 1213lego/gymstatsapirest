@@ -205,7 +205,7 @@ public class ServicioMain
         asistenciasUsuario.setFechaSalida(fechaSalida);
         asistenciaUsuarioRepository.save(asistenciasUsuario);
     }
-    public List<Usuario> listaClientes(int page, int size)
+    public Page<Usuario> listaClientes(int page, int size)
     {
         return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioCliente());
     }

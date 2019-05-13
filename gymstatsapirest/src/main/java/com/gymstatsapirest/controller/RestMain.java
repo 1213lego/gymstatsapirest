@@ -83,7 +83,7 @@ public class RestMain
 
     @GetMapping(path = "/listar-clientes/{page}/{size}")
     @PreAuthorize("hasRole('ROLE_EMPLEADO') or hasRole('ROLE_ADMIN')")
-    public List<Usuario> listarClientes(@PathVariable int page, @PathVariable int size){
+    public Page<Usuario> listarClientes(@PathVariable int page, @PathVariable int size){
         return servicioMain.listaClientes(page,size);
     }
 }

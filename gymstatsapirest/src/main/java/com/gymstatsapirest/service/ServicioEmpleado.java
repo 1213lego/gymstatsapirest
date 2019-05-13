@@ -101,12 +101,5 @@ public class ServicioEmpleado
         suscripcionesRepository.save(nuevaSuscripcion);
         return new ResponseEntity(HttpStatus.OK);
     }
-    public List<Usuario> listaClientes(int page, int size)
-    {
-        return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioCliente());
-    }
-    public List<Usuario> listarEmpleados(int page,int size)
-    {
-        return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioEmpleado());
-    }
+
 }
