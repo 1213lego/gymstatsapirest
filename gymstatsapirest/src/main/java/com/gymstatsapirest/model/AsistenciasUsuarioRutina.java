@@ -21,6 +21,7 @@ public class AsistenciasUsuarioRutina implements Serializable {
 
 	//bi-directional many-to-one association to AsistenciasUsuario
 	@JoinColumn(name="asistencias_usuario_id")
+	@ManyToOne
 	private AsistenciasUsuario asistenciasUsuario;
 
 	//bi-directional many-to-one association to Rutina

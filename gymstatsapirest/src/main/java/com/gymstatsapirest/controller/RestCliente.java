@@ -1,8 +1,10 @@
 package com.gymstatsapirest.controller;
+import com.gymstatsapirest.model.Suscripcione;
 import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.service.ServicioCliente;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -53,5 +55,11 @@ public class RestCliente
     public List darCliente()
     {
         return servicioCliente.darCliente();
+    }
+
+    @GetMapping(path = "clientes/{cedula}/mis-suscripciones/{page}/{size}")
+    @PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_ADMIN') ")
+    public Page<Suscripcione> misSuscripciones(@PathVariable int page, @PathVariable int size,@PathVariable Integer cedula){
+        return servicioCliente.darMisSuscripciones(page,size,cedula);
     }
 }

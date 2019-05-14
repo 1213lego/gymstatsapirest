@@ -1,5 +1,7 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ public class Suscripcione implements Serializable {
 
 	private double precio;
 	//bi-directional many-to-one association to Cliente
+	@JsonIgnore
 	@NotNull
 	@ManyToOne
 	private Cliente cliente;
