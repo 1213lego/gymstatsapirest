@@ -112,4 +112,10 @@ public class RestAdministrador {
     {
         return servicioAdministrador.darTiposEmpleado();
     }
+    @PutMapping(path = "/maquinas/{idMaquina}/estado/{idEstadoMaquina}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity cambiarEstadoMaquina(@PathVariable Integer idMaquina,@PathVariable Short idEstadoMaquina)
+    {
+        return servicioAdministrador.cambiarEstadoMaquina(idMaquina,idEstadoMaquina);
+    }
 }

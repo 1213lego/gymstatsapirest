@@ -1,4 +1,5 @@
 package com.gymstatsapirest.service;
+import com.gymstatsapirest.exception.RecursoNoEncontradoException;
 import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class ServicioAdministrador
     private TarifaRepository tarifaRepository;
     @Autowired
     private MaquinaRepository maquinaRepository;
+    @Autowired
+    private EstadosMaquinaRepository estadosMaquinaRepository;
     public Map<String, String> empleadoValidoParaCrear(Usuario usuario)
     {
         Map<String,String> result=utils.usuarioValidoParaCrear(usuario);
@@ -95,5 +98,12 @@ public class ServicioAdministrador
     public List<TipoEmpleado> darTiposEmpleado()
     {
         return tipoEmpleadoRepository.findAll();
+    }
+
+    public ResponseEntity cambiarEstadoMaquina(Integer idMaquina, Short idEstadoMaquina) {
+        Maquina maquina=maquinaRepository.findById(idMaquina).orElseThrow(()-> new RecursoNoEncontradoException("Maquina","idMaquina",idMaquina));
+        EstadosMaquina estadoMaquina= estadosMaquinaRepository.findById(idEstadoMaquina).orElseThrow(()-> new RecursoNoEncontradoException("EstadosMaquina","idEstadoMaquina",idEstadoMaquina));
+        maquina.setEstadosMaquina(estadoMaquina);
+        return new ResponseEntity(maquinaRepository.save(maquina),HttpStatus.OK);
     }
 }
