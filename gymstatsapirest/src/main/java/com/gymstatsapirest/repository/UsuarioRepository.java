@@ -15,4 +15,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer>
     boolean existsByDocumento(Integer documento);
     @Query("SELECT u FROM Usuario  u WHERE u.tipoUsuario= :tipoUsuario")
     Page<Usuario> listarUsuarios(Pageable pageable, @Param("tipoUsuario") TipoUsuario tipoUsuario);
+
+    List<Usuario> findAllByTipoUsuario(TipoUsuario tipoUsuario);
 }

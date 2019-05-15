@@ -3,6 +3,7 @@ import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.service.ServicioAdministrador;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
@@ -112,10 +113,18 @@ public class RestAdministrador {
     {
         return servicioAdministrador.darTiposEmpleado();
     }
+
     @PutMapping(path = "/maquinas/{idMaquina}/estado/{idEstadoMaquina}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity cambiarEstadoMaquina(@PathVariable Integer idMaquina,@PathVariable Short idEstadoMaquina)
     {
         return servicioAdministrador.cambiarEstadoMaquina(idMaquina,idEstadoMaquina);
     }
+
+    @GetMapping(path = "/listar-empleados/{page}/{size}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Page<Usuario> listarEmpleados(@PathVariable int page, @PathVariable int size){
+        return servicioAdministrador.listarEmpleados(page,size);
+    }
+
 }

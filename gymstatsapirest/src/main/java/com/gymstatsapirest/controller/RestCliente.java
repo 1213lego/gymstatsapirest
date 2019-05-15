@@ -1,6 +1,7 @@
 package com.gymstatsapirest.controller;
 import com.gymstatsapirest.model.Suscripcione;
 import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.service.JwtResponse;
 import com.gymstatsapirest.service.ServicioCliente;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 @Api(value="Clientes ", description="Se encarga de todas las operaciones sobre los clientes")
@@ -48,18 +50,15 @@ public class RestCliente
         return new ResponseEntity<>(newCliente,HttpStatus.CREATED);
     }
 
-
-    //De prueba
-    @GetMapping(path = "/clientes",produces = "application/json")
-    @PreAuthorize("hasRole('ROLE_CLIENTE')")
-    public List darCliente()
-    {
-        return servicioCliente.darCliente();
+    @PostMapping(path = "clientes/mis-suscripciones/{page}/{size}",consumes = "application/json",produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_ADMIN') ")
+    public ResponseEntity misSuscripciones(@PathVariable int page, @PathVariable int size, @NotNull @RequestBody Map jwtResponse){
+        return servicioCliente.darMisSuscripciones(page,size,jwtResponse);
     }
 
-    @GetMapping(path = "clientes/{cedula}/mis-suscripciones/{page}/{size}")
-    @PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_ADMIN') ")
-    public Page<Suscripcione> misSuscripciones(@PathVariable int page, @PathVariable int size,@PathVariable Integer cedula){
-        return servicioCliente.darMisSuscripciones(page,size,cedula);
+    @PutMapping(path = "clientes/congelar-suscripcion",consumes = "application/json",produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_CLIENTE')")
+    public ResponseEntity congelarSuscripcion(@NotNull @RequestBody Map jwtResponse){
+        return servicioCliente.congelarSuscripcion(jwtResponse);
     }
 }

@@ -10,10 +10,7 @@ public class JwtResponse
     }
     public JwtResponse()
     {
-
     }
-
-
     public String getAccessToken() {
         return token;
     }

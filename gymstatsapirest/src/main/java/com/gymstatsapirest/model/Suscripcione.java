@@ -33,7 +33,6 @@ public class Suscripcione implements Serializable {
 
 	private double precio;
 	//bi-directional many-to-one association to Cliente
-	@JsonIgnore
 	@NotNull
 	@ManyToOne
 	private Cliente cliente;

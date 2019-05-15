@@ -28,10 +28,12 @@ public class Cliente implements Serializable {
 	private Usuario usuario;
 
 	//bi-directional many-to-one association to MedidaCliente
+	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
 	private List<MedidaCliente> medidaClientes;
 
 	//bi-directional many-to-one association to Suscripcione
+	@JsonIgnore
 	@OneToMany(mappedBy="cliente")
 	private List<Suscripcione> suscripciones;
 
