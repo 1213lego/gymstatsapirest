@@ -1,8 +1,6 @@
 package com.gymstatsapirest.controller;
 import com.gymstatsapirest.exception.RecursoNoEncontradoException;
-import com.gymstatsapirest.model.Cliente;
-import com.gymstatsapirest.model.Suscripcione;
-import com.gymstatsapirest.model.Usuario;
+import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.service.ServicioEmpleado;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +55,30 @@ public class RestEmpleado
         {
             return servicioEmpleado.registrarSuscripcion(suscripcion);
         }
+    }
+
+
+    @PostMapping(value = "/tipos-medida" , consumes = "application/json")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity registrarTipoMedida(@Valid @RequestBody TiposMedida tiposMedida,BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+        {
+            return servicioEmpleado.getUtils().badRequestErrorFields(bindingResult.getFieldErrors());
+        }
+        else{
+            return servicioEmpleado.registrarTipoMedida(tiposMedida);
+        }
+    }
+
+    @GetMapping(path = "/asistencia-clientes/{page}/{size}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_EMPLEADO')")
+    public Page<AsistenciasUsuario> darAsistenciasCliente(@PathVariable int page, @PathVariable int size){
+        return servicioEmpleado.darAsistenciasClientes(page,size);
+    }
+
+    @PostMapping(path = "/añadir-medida-cliente", consumes = "application/json")
+    @PreAuthorize("hasRole('ROLE_EMPLEADO')")
+    public ResponseEntity agregarMedidaCliente(@RequestBody MedidaCliente miMedidaCliente){
+        return servicioEmpleado.agregarMedidaCliente(miMedidaCliente);
     }
 }

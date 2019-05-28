@@ -62,7 +62,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         http.cors().and().csrf().disable().
                 authorizeRequests()
                 .antMatchers("/login","/tarifas","/maquinas","/signup","/swagger-ui.html","/v2/api-docs","/swagger-ui","/generos","/tiposdocumento","/validate",
-                        "/swagger-ui.html","/estadosmaquina","/asistencias").permitAll()
+                        "/swagger-ui.html","/estadosmaquina","/asistencias", "/documentos-clientes","/tipos-medida").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

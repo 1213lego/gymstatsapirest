@@ -126,5 +126,9 @@ public class RestAdministrador {
     public Page<Usuario> listarEmpleados(@PathVariable int page, @PathVariable int size){
         return servicioAdministrador.listarEmpleados(page,size);
     }
-
+    @GetMapping(path = "/asistencia-empleados/{page}/{size}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public Page<AsistenciasUsuario> darAsistenciasEmpleados(@PathVariable int page, @PathVariable int size){
+        return servicioAdministrador.darAsistenciasEmpleados(page,size);
+    }
 }

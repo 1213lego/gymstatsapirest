@@ -3,6 +3,7 @@ import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.service.JwtResponse;
 import com.gymstatsapirest.service.ServicioMain;
 import io.swagger.annotations.Api;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -85,5 +86,15 @@ public class RestMain
     @PreAuthorize("hasRole('ROLE_EMPLEADO') or hasRole('ROLE_ADMIN')")
     public Page<Usuario> listarClientes(@PathVariable int page, @PathVariable int size){
         return servicioMain.listaClientes(page,size);
+    }
+    //de prueba
+    @GetMapping(path = "/documentos-clientes")
+    public List<Integer> darDocumentoCliente(){
+        return  servicioMain.darDocumentoCliente();
+    }
+
+    @GetMapping(path = "/tipos-medida",produces =   "application/json")
+    public List<TiposMedida> darTiposMedida(){
+        return servicioMain.darTiposMedida();
     }
 }

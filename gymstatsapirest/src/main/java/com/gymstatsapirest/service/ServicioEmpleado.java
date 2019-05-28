@@ -1,13 +1,7 @@
 package com.gymstatsapirest.service;
 import com.gymstatsapirest.exception.RecursoNoEncontradoException;
-import com.gymstatsapirest.model.Cliente;
-import com.gymstatsapirest.model.Suscripcione;
-import com.gymstatsapirest.model.Tarifa;
-import com.gymstatsapirest.model.Usuario;
-import com.gymstatsapirest.repository.ClienteRepository;
-import com.gymstatsapirest.repository.SuscripcionesRepository;
-import com.gymstatsapirest.repository.TarifaRepository;
-import com.gymstatsapirest.repository.UsuarioRepository;
+import com.gymstatsapirest.model.*;
+import com.gymstatsapirest.repository.*;
 import lombok.Cleanup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +35,11 @@ public class ServicioEmpleado
     private ClienteRepository clienteRepository;
     @Autowired
     private TarifaRepository tarifaRepository;
-
+    @Autowired
+    private TiposMedidadRepository tiposMedidadRepository;
+    @Autowired private AsistenciaUsuarioRepository asistenciaUsuarioRepository;
+    @Autowired
+    private MedidaClienteRepository medidaClienteRepository;
     public Optional<Usuario> darUsuario(Integer documento)
     {
         return usuarioRepository.findById(documento);
@@ -102,4 +100,17 @@ public class ServicioEmpleado
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    public ResponseEntity registrarTipoMedida(TiposMedida tiposMedida) {
+        tiposMedida.setIdMedida(null);
+        return new ResponseEntity(tiposMedidadRepository.save(tiposMedida),HttpStatus.CREATED);
+    }
+
+    public Page<AsistenciasUsuario> darAsistenciasClientes(int page, int size) {
+        return asistenciaUsuarioRepository.findAllByUsuarioTipoUsuario(utils.getTipoUsuarioCliente(),PageRequest.of(page,size));
+    }
+
+    public ResponseEntity agregarMedidaCliente(MedidaCliente medidaCliente) {
+        medidaCliente.setFechaTomaMedida(new Date(System.currentTimeMillis()));
+        return new ResponseEntity(medidaClienteRepository.save(medidaCliente),HttpStatus.CREATED);
+    }
 }

@@ -1,6 +1,7 @@
 package com.gymstatsapirest.model;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 
 
@@ -18,7 +19,7 @@ public class MedidaCliente implements Serializable {
 	private Integer id;
 
 	@Column(name="fecha_toma_medida")
-	private float fechaTomaMedida;
+	private Date fechaTomaMedida;
 
 	@Column(name="valor_medida")
 	private Integer valorMedida;
@@ -44,11 +45,11 @@ public class MedidaCliente implements Serializable {
 		this.id = id;
 	}
 
-	public float getFechaTomaMedida() {
+	public Date getFechaTomaMedida() {
 		return this.fechaTomaMedida;
 	}
 
-	public void setFechaTomaMedida(float fechaTomaMedida) {
+	public void setFechaTomaMedida(Date fechaTomaMedida) {
 		this.fechaTomaMedida = fechaTomaMedida;
 	}
 
