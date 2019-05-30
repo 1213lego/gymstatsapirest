@@ -1,0 +1,14 @@
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (94, 'hacer 10 repeticiones con barra inclinada, plano y declinado', 'pecho');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (96, '10 de brazo', 'brazo');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (97, '10 sentadillas', 'pierna');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (98, 'acb', 'abc');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (99, 'qwe', 'qwe');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (120, 'df', 'df');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (121, 'df', 'df');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (122, 's', 'd');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (123, 's', 'd');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (124, 'd', 'd');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (125, 'aa', 'aa');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (126, 'ss', 'sss');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (127, 'dsdsd', 'dssd');
+INSERT INTO public.rutinas (id, descripcion_rutina, nombre_rutina) VALUES (128, 'sd', 'sdsd');
