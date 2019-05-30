@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 
@@ -19,10 +21,10 @@ public class Rutina implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
-
+	@NotBlank
 	@Column(name="descripcion_rutina")
 	private String descripcionRutina;
-
+	@NotBlank
 	@Column(name="nombre_rutina")
 	private String nombreRutina;
 

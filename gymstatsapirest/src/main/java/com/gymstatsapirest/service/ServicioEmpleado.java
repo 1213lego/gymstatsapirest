@@ -40,6 +40,8 @@ public class ServicioEmpleado
     @Autowired private AsistenciaUsuarioRepository asistenciaUsuarioRepository;
     @Autowired
     private MedidaClienteRepository medidaClienteRepository;
+    @Autowired
+    private RutinasRepository rutinasRepository;
     public Optional<Usuario> darUsuario(Integer documento)
     {
         return usuarioRepository.findById(documento);
@@ -112,5 +114,14 @@ public class ServicioEmpleado
     public ResponseEntity agregarMedidaCliente(MedidaCliente medidaCliente) {
         medidaCliente.setFechaTomaMedida(new Date(System.currentTimeMillis()));
         return new ResponseEntity(medidaClienteRepository.save(medidaCliente),HttpStatus.CREATED);
+    }
+
+    public ResponseEntity agregarRutina(Rutina rutina) {
+        rutina.setId(null);
+        return new ResponseEntity(rutinasRepository.save(rutina),HttpStatus.CREATED);
+    }
+
+    public List<Rutina> darRutinas() {
+        return rutinasRepository.findAll();
     }
 }

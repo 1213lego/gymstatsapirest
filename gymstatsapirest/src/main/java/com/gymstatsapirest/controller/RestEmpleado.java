@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Api(value="Empleados ", description="Se encarga de todas las operaciones sobre los empleado")
 @RestController
@@ -80,5 +81,15 @@ public class RestEmpleado
     @PreAuthorize("hasRole('ROLE_EMPLEADO')")
     public ResponseEntity agregarMedidaCliente(@RequestBody MedidaCliente miMedidaCliente){
         return servicioEmpleado.agregarMedidaCliente(miMedidaCliente);
+    }
+    @PostMapping(path = "/rutinas", consumes = "application/json")
+    @PreAuthorize(("hasRole('ROLE_EMPLEADO')"))
+    public ResponseEntity agregaRutina(@Valid @RequestBody Rutina rutina){
+        return servicioEmpleado.agregarRutina(rutina);
+    }
+
+    @GetMapping(path = "/rutinas", produces = "application/json")
+    public List<Rutina> darRutinas(){
+        return servicioEmpleado.darRutinas();
     }
 }

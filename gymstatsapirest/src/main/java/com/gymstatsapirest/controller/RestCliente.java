@@ -1,15 +1,12 @@
 package com.gymstatsapirest.controller;
-import com.gymstatsapirest.model.Suscripcione;
+import com.gymstatsapirest.model.MedidaCliente;
 import com.gymstatsapirest.model.Usuario;
-import com.gymstatsapirest.service.JwtResponse;
 import com.gymstatsapirest.service.ServicioCliente;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -60,5 +57,10 @@ public class RestCliente
     @PreAuthorize("hasRole('ROLE_CLIENTE')")
     public ResponseEntity congelarSuscripcion(@NotNull @RequestBody Map jwtResponse){
         return servicioCliente.congelarSuscripcion(jwtResponse);
+    }
+    @PostMapping(path = "clientes/mis-medidas",produces ="application/json",consumes = "application/json" )
+    @PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_ADMIN') ")
+    public ResponseEntity darMedidasCliente(@NotNull @RequestBody Map jwtResponse){
+        return servicioCliente.darMedidasCliente(jwtResponse);
     }
 }

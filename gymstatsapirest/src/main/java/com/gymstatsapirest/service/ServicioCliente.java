@@ -32,6 +32,7 @@ public class ServicioCliente
     private SuscripcionesRepository suscripcionesRepository;
     @Autowired
     private JwtProvider jwtProvider;
+    @Autowired MedidaClienteRepository medidaClienteRepository;
     public Usuario crearCliente(Usuario usuario)
     {
         usuario.setTipoUsuario(utils.getTipoUsuarioCliente());
@@ -90,5 +91,17 @@ public class ServicioCliente
         }
         suscripcione.setEstadoSuscripcion(utils.getEstadoSuscripcionCongelada());
         return new ResponseEntity(suscripcionesRepository.save(suscripcione),HttpStatus.OK);
+    }
+    public ResponseEntity darMedidasCliente(Map<String,String> jwtResponse){
+        if(!jwtProvider.validateJwtToken(jwtResponse.get("token"))){
+            return  new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        String username=jwtProvider.getUserNameFromJwtToken(jwtResponse.get("token"));
+        Usuario usuario=autenticacionUsuarioRepository.findByUsername(username).get().getUsuario();
+        if(!usuario.getTipoUsuario().getTipo().equals(utils.getTipoUsuarioCliente().getTipo())){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        return new ResponseEntity(medidaClienteRepository.findAllByClienteDocumento(usuario.getDocumento()),HttpStatus.OK);
     }
 }
