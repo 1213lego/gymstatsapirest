@@ -25,6 +25,7 @@ public class Utils
     public static final String ESTADO_USUARIO_INACTIVO="Inactivo";
     public static final String ESTADO_SUSCRIPCION_EXPIRADA="expirada";
     public static final String ESTADO_SUSCRIPCION_VIGENTE="vigente";
+    public static final String ESTADO_SUSCRIPCION_CONGELADA="congelada";
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
@@ -38,6 +39,7 @@ public class Utils
     private EstadosUsuario estadoUsuarioInactivo;
     private EstadoSuscripcion estadoSuscripcionExpirada;
     private EstadoSuscripcion estadoSuscripcionVigente;
+    private EstadoSuscripcion estadoSuscripcionCongelada;
     private Tarifa tarifaDiaria;
     @Autowired
     private PasswordEncoder encoder;
@@ -90,6 +92,12 @@ public class Utils
             vigente=estadoSuscripcionRepository.save(new EstadoSuscripcion(ESTADO_SUSCRIPCION_VIGENTE));
         }
         estadoSuscripcionVigente=vigente;
+        EstadoSuscripcion congelada=estadoSuscripcionRepository.findByEstadoSuscripcion(ESTADO_SUSCRIPCION_CONGELADA);
+        if(congelada==null)
+        {
+            congelada=estadoSuscripcionRepository.save(new EstadoSuscripcion(ESTADO_SUSCRIPCION_CONGELADA));
+        }
+        estadoSuscripcionCongelada=congelada;
     }
 
     public TipoUsuario getTipoUsuarioCliente() {
@@ -179,5 +187,9 @@ public class Utils
     public int getAnioActual()
     {
         return Calendar.getInstance().get(Calendar.YEAR);
+    }
+
+    public EstadoSuscripcion getEstadoSuscripcionCongelada() {
+        return estadoSuscripcionCongelada;
     }
 }

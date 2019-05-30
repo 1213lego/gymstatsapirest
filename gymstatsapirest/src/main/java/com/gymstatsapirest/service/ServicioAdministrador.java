@@ -1,7 +1,11 @@
 package com.gymstatsapirest.service;
+import com.gymstatsapirest.exception.RecursoNoEncontradoException;
 import com.gymstatsapirest.model.*;
 import com.gymstatsapirest.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,10 @@ public class ServicioAdministrador
     private TarifaRepository tarifaRepository;
     @Autowired
     private MaquinaRepository maquinaRepository;
+    @Autowired
+    private EstadosMaquinaRepository estadosMaquinaRepository;
+    @Autowired
+    private AsistenciaUsuarioRepository asistenciaUsuarioRepository;
     public Map<String, String> empleadoValidoParaCrear(Usuario usuario)
     {
         Map<String,String> result=utils.usuarioValidoParaCrear(usuario);
@@ -95,5 +103,19 @@ public class ServicioAdministrador
     public List<TipoEmpleado> darTiposEmpleado()
     {
         return tipoEmpleadoRepository.findAll();
+    }
+
+    public ResponseEntity cambiarEstadoMaquina(Integer idMaquina, Short idEstadoMaquina) {
+        Maquina maquina=maquinaRepository.findById(idMaquina).orElseThrow(()-> new RecursoNoEncontradoException("Maquina","idMaquina",idMaquina));
+        EstadosMaquina estadoMaquina= estadosMaquinaRepository.findById(idEstadoMaquina).orElseThrow(()-> new RecursoNoEncontradoException("EstadosMaquina","idEstadoMaquina",idEstadoMaquina));
+        maquina.setEstadosMaquina(estadoMaquina);
+        return new ResponseEntity(maquinaRepository.save(maquina),HttpStatus.OK);
+    }
+
+    public Page<Usuario> listarEmpleados(int page, int size){
+        return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioEmpleado());
+    }
+    public Page<AsistenciasUsuario> darAsistenciasEmpleados(int page, int size ){
+        return asistenciaUsuarioRepository.findAllByUsuarioTipoUsuario(utils.getTipoUsuarioEmpleado(), PageRequest.of(page,size));
     }
 }

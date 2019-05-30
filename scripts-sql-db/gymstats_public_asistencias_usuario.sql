@@ -1,0 +1,3 @@
+INSERT INTO public.asistencias_usuario (id, fecha_ingreso, fecha_salida, documento_usuario) VALUES (46, '2019-04-24 19:14:33.945000', '2019-04-24 19:15:44.294000', 98745636);
+INSERT INTO public.asistencias_usuario (id, fecha_ingreso, fecha_salida, documento_usuario) VALUES (47, '2019-04-24 19:18:39.502000', '2019-04-24 19:19:10.214000', 98745636);
+INSERT INTO public.asistencias_usuario (id, fecha_ingreso, fecha_salida, documento_usuario) VALUES (83, '2019-04-26 20:15:31.222000', '2019-04-26 20:16:37.922000', 88855454);

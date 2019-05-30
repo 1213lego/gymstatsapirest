@@ -1,0 +1,2 @@
+INSERT INTO public.medida_clientes (id, clientesdocumento, tipos_medidaid_medida, valor_medida, fecha_toma_medida) VALUES (93, 6666, 89, 25, '2019-05-27');
+INSERT INTO public.medida_clientes (id, clientesdocumento, tipos_medidaid_medida, valor_medida, fecha_toma_medida) VALUES (132, 6666, 89, 20, '2019-05-29');

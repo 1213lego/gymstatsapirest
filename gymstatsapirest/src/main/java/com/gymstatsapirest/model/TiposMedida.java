@@ -1,7 +1,10 @@
 package com.gymstatsapirest.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -18,12 +21,13 @@ public class TiposMedida implements Serializable {
 	@GeneratedValue
 	@Column(name="id_medida")
 	private Short idMedida;
-
-	private byte[] descripcion;
-
+	@NotBlank
+	private String descripcion;
+	@NotBlank
 	private String nombre;
 
 	//bi-directional many-to-one association to MedidaCliente
+	@JsonIgnore
 	@OneToMany(mappedBy="tiposMedida")
 	private List<MedidaCliente> medidaClientes;
 
@@ -38,11 +42,11 @@ public class TiposMedida implements Serializable {
 		this.idMedida = idMedida;
 	}
 
-	public byte[] getDescripcion() {
+	public String getDescripcion() {
 		return this.descripcion;
 	}
 
-	public void setDescripcion(byte[] descripcion) {
+	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
 

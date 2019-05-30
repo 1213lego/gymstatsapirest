@@ -1,4 +1,5 @@
 package com.gymstatsapirest.controller;
+import com.gymstatsapirest.model.MedidaCliente;
 import com.gymstatsapirest.model.Usuario;
 import com.gymstatsapirest.service.ServicioCliente;
 import io.swagger.annotations.*;
@@ -6,10 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 @Api(value="Clientes ", description="Se encarga de todas las operaciones sobre los clientes")
@@ -46,12 +47,20 @@ public class RestCliente
         return new ResponseEntity<>(newCliente,HttpStatus.CREATED);
     }
 
+    @PostMapping(path = "clientes/mis-suscripciones/{page}/{size}",consumes = "application/json",produces = "application/json")
+    @PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_ADMIN') ")
+    public ResponseEntity misSuscripciones(@PathVariable int page, @PathVariable int size, @NotNull @RequestBody Map jwtResponse){
+        return servicioCliente.darMisSuscripciones(page,size,jwtResponse);
+    }
 
-    //De prueba
-    @GetMapping(path = "/clientes",produces = "application/json")
+    @PutMapping(path = "clientes/congelar-suscripcion",consumes = "application/json",produces = "application/json")
     @PreAuthorize("hasRole('ROLE_CLIENTE')")
-    public List darCliente()
-    {
-        return servicioCliente.darCliente();
+    public ResponseEntity congelarSuscripcion(@NotNull @RequestBody Map jwtResponse){
+        return servicioCliente.congelarSuscripcion(jwtResponse);
+    }
+    @PostMapping(path = "clientes/mis-medidas",produces ="application/json",consumes = "application/json" )
+    @PreAuthorize("hasRole('ROLE_CLIENTE') or hasRole('ROLE_ADMIN') ")
+    public ResponseEntity darMedidasCliente(@NotNull @RequestBody Map jwtResponse){
+        return servicioCliente.darMedidasCliente(jwtResponse);
     }
 }

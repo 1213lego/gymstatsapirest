@@ -44,7 +44,8 @@ public class ServicioMain
     private EstadosMaquinaRepository estadosMaquinaRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    @Autowired
+    private TiposMedidadRepository tiposMedidadRepository;
     public List<Tarifa> darTarifas()
     {
         return tarifaRepository.findAll();
@@ -208,6 +209,14 @@ public class ServicioMain
     public Page<Usuario> listaClientes(int page, int size)
     {
         return usuarioRepository.listarUsuarios(PageRequest.of(page,size),utils.getTipoUsuarioCliente());
+    }
+
+    public List<Integer> darDocumentoCliente() {
+        return usuarioRepository.darDocumento(utils.getTipoUsuarioCliente());
+    }
+
+    public List<TiposMedida> darTiposMedida() {
+        return tiposMedidadRepository.findAll();
     }
 }
 

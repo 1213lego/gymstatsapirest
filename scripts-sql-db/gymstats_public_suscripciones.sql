@@ -1,0 +1,4 @@
+INSERT INTO public.suscripciones (id_subscripcion, fecha_fin, fecha_inicio, precio, cliente_documento, estado_suscripcon, tipo_tarifa) VALUES (86, '2019-05-31 20:22:25.644000', '2019-05-15 14:29:51.707000', 200000, 123456, 2, 1);
+INSERT INTO public.suscripciones (id_subscripcion, fecha_fin, fecha_inicio, precio, cliente_documento, estado_suscripcon, tipo_tarifa) VALUES (87, '2019-07-10 19:48:07.253000', '2019-05-15 19:07:31.193000', 30, 6666, 2, 1);
+INSERT INTO public.suscripciones (id_subscripcion, fecha_fin, fecha_inicio, precio, cliente_documento, estado_suscripcon, tipo_tarifa) VALUES (78, '2020-05-31 16:34:16.627000', '2019-04-26 16:34:16.627000', 200000, 3434, 2, 1);
+INSERT INTO public.suscripciones (id_subscripcion, fecha_fin, fecha_inicio, precio, cliente_documento, estado_suscripcon, tipo_tarifa) VALUES (80, '2019-05-10 23:59:59.000000', '2019-04-26 20:11:21.530000', 5000, 88855454, 2, 1);

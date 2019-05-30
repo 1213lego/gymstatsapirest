@@ -1,0 +1,4 @@
+INSERT INTO public.maquinas (id, descripcion, fecha_compra, marca, nombre, estado_maquina) VALUES (82, 'para hacer pecho', '2019-04-25 20:00:00.000000', 'fitness sport', 'presst chest', 1);
+INSERT INTO public.maquinas (id, descripcion, fecha_compra, marca, nombre, estado_maquina) VALUES (85, 'sas', '2019-05-14 20:00:00.000000', 'nueva', 'Nueva', 2);
+INSERT INTO public.maquinas (id, descripcion, fecha_compra, marca, nombre, estado_maquina) VALUES (38, 'asd', '2019-04-23 20:00:00.000000', 'asd', 'asd', 1);
+INSERT INTO public.maquinas (id, descripcion, fecha_compra, marca, nombre, estado_maquina) VALUES (129, 'sas', '2019-05-27 20:00:00.000000', 'asas', 'sas', 1);
